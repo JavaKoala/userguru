@@ -7,29 +7,10 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  <%= render 'layouts/header' %>
   <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <%= link_to "user guru", "#", id: "logo" %>
-        <nav>
-          <ul class="nav nav-pills navbar-right">
-            <li role="presentation" class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              Menu <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Home",  "#" %></li>
-                <li><%= link_to "Help",  "#" %></li>
-                <li><%= link_to "Login", "#" %></li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div class="container">
-        <%= yield %>
-      </div>
-    </header>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
