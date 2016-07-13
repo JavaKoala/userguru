@@ -1,7 +1,12 @@
 require 'test_helper'
 
 class RoleTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  
+  def setup
+    @role = Role.new(name: "admin")
+  end
+  
+  test "role should be valid" do
+    assert @role.valid?
+  end
 end
