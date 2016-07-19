@@ -6,4 +6,6 @@ one:
   password_digest: <%= User.digest('password') %>
 
 two:
-  name: MyString
+  name: Bob Example
+  email: bob@example.com
+  password_digest: <%= User.digest('password') %>
