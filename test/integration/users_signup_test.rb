@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
+
+  def setup
+    ActionMailer::Base.deliveries.clear
+  end
   
   test "invalid signup information" do
     get signup_path
@@ -13,7 +17,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
   end
   
-  test "valid signup information" do
+  test "valid signup information with account activation" do
     get signup_path
     assert_difference 'User.count', 1 do
       post users_path, params: { user: { name: "Example User",
@@ -23,6 +27,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       follow_redirect!
     end
     assert_response :success
-    assert is_logged_in?
+    assert_equal 1, ActionMailer::Base.deliveries.size
   end
 end
