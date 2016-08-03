@@ -4,6 +4,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
   
   def setup
     @user = users(:one)
+    @user.roles << Role.where(name: 'customer')
   end
   
   test "unsuccessful edit" do

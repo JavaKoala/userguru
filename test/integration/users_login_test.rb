@@ -2,8 +2,11 @@ require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
 
+  include SessionsHelper
+
   def setup
     @user = users(:one)
+    @user.roles << Role.where(name: 'customer')
   end
   
   test "login with invalid information followed by logout" do
@@ -12,6 +15,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     post login_path, params: { session: { email: @user.email,
                                           password: 'password' } }
     assert is_logged_in?
+    assert_not internal_user?
     assert_redirected_to @user
     follow_redirect!
     assert_response :success

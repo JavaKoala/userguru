@@ -9,4 +9,14 @@ class RoleTest < ActiveSupport::TestCase
   test "role should be valid" do
     assert @role.valid?
   end
+  
+  test "role name should not be blank" do
+    @role.name = "     "
+    assert_not @role.valid?
+  end
+  
+  test "role name should be at least 4 characters" do
+    @role.name = "lol"
+    assert_not @role.valid?
+  end
 end

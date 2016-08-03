@@ -55,4 +55,9 @@ module SessionsHelper
   def store_location
     session[:fowarding_url] = request.url if request.get?
   end
+
+  # Determines if the user is an internal user
+  def internal_user?
+    current_user.roles.exists?(name: 'representative') || current_user.roles.exists?(name: 'admin')
+  end
 end

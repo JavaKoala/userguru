@@ -5,8 +5,20 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create!(name: "Example User",
-             email: "example@user.guru",
-             password: "foobar",
-             password_confirmation: "foobar",
-             activated: false)
+
+# Create roles
+user_roles = ["admin", "representative", "customer"]
+
+user_roles.each do |role_name|
+  Role.create(name: role_name)
+end
+
+# Create admin user
+User.create!(name: "Admin User",
+             email: "admin@user.guru",
+             password: "password",
+             password_confirmation: "password",
+             activated: true)
+
+# Create admin role for user
+User.first.roles.create!(name: 'admin')
