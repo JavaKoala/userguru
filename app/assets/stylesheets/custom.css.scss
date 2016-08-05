@@ -148,6 +148,16 @@ input {
   margin-left: 0;
 }
 
+/* Users index */
+.users {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+  }
+}
+
 /* miscellaneous */
 
 .debug_dump {

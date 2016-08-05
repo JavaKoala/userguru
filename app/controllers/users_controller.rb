@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :edit, :update]
+  before_action :logged_in_user, only: [:show, :edit, :update]
   before_action :correct_user,   only: [:edit, :update]
+  before_action :internal_user,  only: [:index]
+  
+  def index
+    @users = User.all
+  end
 
   def show
     @user = User.find(params[:id])
@@ -56,5 +61,12 @@ class UsersController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user)
+    end
+    
+    # Confirms an internal user
+    def internal_user
+      unless internal_user?
+        redirect_to login_url
+      end
     end
 end
