@@ -21,4 +21,18 @@ User.create!(name: "Admin User",
              activated: true)
 
 # Create admin role for user
-User.first.roles.create!(name: 'admin')
+User.first.roles << Role.where(name: 'admin')
+
+if Rails.env != 'production'
+  99.times do |n|
+    name = Faker::Name.name
+    email = "example-#{n+1}@user.guru"
+    password = "password"
+    User.create!(name:  name,
+                 email: email,
+                 password:              password,
+                 password_confirmation: password)
+    user = User.find_by(email: email)
+    user.roles << Role.where(name: 'customer')
+  end
+end

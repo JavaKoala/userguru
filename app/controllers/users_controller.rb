@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :internal_user,  only: [:index]
   
   def index
-    @users = User.all
+    @users = User.paginate(page: params[:page])
   end
 
   def show
