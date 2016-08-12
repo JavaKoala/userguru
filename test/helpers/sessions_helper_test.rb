@@ -23,10 +23,16 @@ class SessionsHelperTest < ActionView::TestCase
   test "current user should not be internal if they only have the customer role" do
     assert_not internal_user?
   end
+  
+  test "current user should not be admin if they do not have the admin role" do
+    @user.roles << Role.where(name: 'representative')
+    assert_not admin_user?
+  end
 
-  test "current user should be internal if they have the admin role" do
+  test "current user should be internal and admin if they have the admin role" do
     @user.roles << Role.where(name: 'admin')
     assert internal_user?
+    assert admin_user?
   end
 
   test "current user should be internal if they have the representative role" do

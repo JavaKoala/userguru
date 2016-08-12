@@ -60,4 +60,9 @@ module SessionsHelper
   def internal_user?
     current_user.roles.exists?(name: 'representative') || current_user.roles.exists?(name: 'admin')
   end
+  
+  # Determines if the user is an admin user
+  def admin_user?
+    current_user.roles.exists?(name: 'admin')
+  end
 end

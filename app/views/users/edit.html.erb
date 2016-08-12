@@ -16,6 +16,13 @@
       
       <%= f.label :password_confirmation, "Confirmation" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+      <% if admin_user? %>
+        <% Role.all.each do |role| %>
+          <%= check_box_tag "user[role_ids][]", role.id, f.object.roles.include?(role) %>
+          <%= role.name %>
+        <% end %>
+      <% end %>
       
       <%= f.submit "Save changes", class: "btn btn-primary" %>
     <% end %>

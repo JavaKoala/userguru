@@ -9,7 +9,7 @@ class User < ApplicationRecord
   before_create :create_activation_digest
   
   # Model relations
-  has_many :user_roles
+  has_many :user_roles, dependent: :destroy
   has_many :roles, :through => :user_roles
   
   # Model validations
