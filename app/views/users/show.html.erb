@@ -6,4 +6,13 @@
       </h1>
     </section>
   </aside>
+  <div class="col-md-8">
+    <% if @user.issues.any? %>
+      <h3>Issues (<%= @user.issues.count %>)</h3>
+      <ol class="issues">
+        <%= render @issues %>
+      </ol>
+      <%= will_paginate @issues %>
+    <% end %>
+  </div>
 </div>

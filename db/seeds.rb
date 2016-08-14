@@ -23,6 +23,11 @@ User.create!(name: "Admin User",
 # Create admin role for user
 User.first.roles << Role.where(name: 'admin')
 
+# Create issue for admin user
+title       = "Example issue"
+description = "This is an example issue"
+User.first.issues.create!(title: title, description: description)
+
 if Rails.env != 'production'
   99.times do |n|
     name = Faker::Name.name

@@ -1,0 +1,18 @@
+<h1>Create New Issue</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@issue) do |f| %>
+
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control' %>
+      
+      <%= f.label :description %>
+      <%= f.email_field :description, class: 'form-control' %>
+      
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+
+      <%= f.submit "Create new issue", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

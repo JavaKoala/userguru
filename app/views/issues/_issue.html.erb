@@ -1,0 +1,8 @@
+<li id="issue-<%= issue.id %>">
+  <span class="user"><%= link_to issue.user.name, issue.user %></span>
+  <span class="title"><%= issue.title %></span>
+  <span class="description"><%= issue.description %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(issue.created_at) %> ago.
+  </span>
+</li>

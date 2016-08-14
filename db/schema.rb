@@ -10,12 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160724131837) do
+ActiveRecord::Schema.define(version: 20160813112620) do
+
+  create_table "issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "title"
+    t.text     "description", limit: 65535
+    t.integer  "user_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["user_id", "title"], name: "index_issues_on_user_id_and_title", using: :btree
+    t.index ["user_id"], name: "index_issues_on_user_id", using: :btree
+  end
 
   create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_issues", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "issue_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id", "user_id"], name: "index_user_issues_on_issue_id_and_user_id", unique: true, using: :btree
+    t.index ["issue_id"], name: "index_user_issues_on_issue_id", using: :btree
+    t.index ["user_id"], name: "index_user_issues_on_user_id", using: :btree
   end
 
   create_table "user_roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -43,4 +63,5 @@ ActiveRecord::Schema.define(version: 20160724131837) do
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
   end
 
+  add_foreign_key "issues", "users"
 end
