@@ -1,8 +1,12 @@
 class IssuesController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :destroy]
+  before_action :logged_in_user, only: [:new, :show, :create, :edit, :update, :destroy]
   
   def new
     @issue = Issue.new
+  end
+  
+  def show
+    @issue = Issue.find(params[:id])
   end
   
   def create
@@ -15,12 +19,26 @@ class IssuesController < ApplicationController
     end
   end
   
+  def edit
+    @issue = Issue.find(params[:id])
+  end
+  
+  def update
+    @issue = Issue.find(params[:id])
+    if @issue.update_attributes(issue_params)
+      flash[:success] = "Issue updated"
+      redirect_to issue_path(@issue)
+    else
+      render 'edit'
+    end
+  end
+  
   def destroy
   end
   
   private
     
     def issue_params
-      params.require(:issue).permit(:title, :description, :user_id)
+      params.require(:issue).permit(:title, :description, :user_id, :status)
     end
 end

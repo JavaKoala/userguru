@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(version: 20160813112620) do
     t.string   "title"
     t.text     "description", limit: 65535
     t.integer  "user_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "status",                    default: 0
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.index ["user_id", "title"], name: "index_issues_on_user_id_and_title", using: :btree
     t.index ["user_id"], name: "index_issues_on_user_id", using: :btree
   end

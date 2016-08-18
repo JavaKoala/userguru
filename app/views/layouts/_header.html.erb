@@ -26,5 +26,8 @@
         </li>
       </ul>
     </nav>
+    <% if logged_in? %>
+      <%= link_to "New Issue", new_issue_path, class: "btn btn-primary pull-right" %>
+    <% end %>
   </div>
 </header>
