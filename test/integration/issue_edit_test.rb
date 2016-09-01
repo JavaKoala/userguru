@@ -4,7 +4,9 @@ class IssueEditTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:one)
-    @user.roles << Role.where(name: 'customer')
+    @user.roles << Role.where(name: 'representative')
+    @other_user = users(:two)
+    @other_user.roles << Role.where(name: 'customer')
   end
   
   test "issue edit test" do
@@ -31,5 +33,35 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     assert_select "li", /updated title/
     assert_select "li", /updated description/
     assert_select "li", /Closed/
-  end 
+  end
+  
+  test "customers cannot edit the status of issues" do
+    log_in_as(@other_user)
+    get new_issue_path
+    post issues_path, params: { issue: { title: "test title", 
+                                         description: "test description", 
+                                         user_id: @other_user.id } }
+    follow_redirect!
+    assert_response :success
+    @issue = Issue.find_by( title: "test title" )
+    get edit_issue_path(@issue)
+    assert_select "option", false
+  end
+  
+  test "unsuccessful edit, title and description empty" do
+    log_in_as(@user)
+    get new_issue_path
+    post issues_path, params: { issue: { title: "test title", 
+                                         description: "test description", 
+                                         user_id: @user.id } }
+    follow_redirect!
+    assert_response :success
+    @issue = Issue.find_by( title: "test title" )
+    get edit_issue_path(@issue)
+    patch issue_path(@issue), params: { issue: { title: '',
+                                                   description: '' } }
+    assert_response :success
+    assert @issue.title = "test title"
+    assert @issue.title = "test description"
+  end
 end

@@ -77,4 +77,27 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
     assert @issue.description = "new description"
   end
 
+  test "should redirect delete when not logged in" do
+    assert_no_difference 'Issue.count' do
+      delete issue_url(@issue)
+    end
+    assert_redirected_to login_url
+  end
+  
+  test "should delete issue" do
+    @other_user.roles << Role.where(name: 'admin')
+    log_in_as(@other_user)
+    assert_difference 'Issue.count', -1 do
+      delete issue_url(@issue)
+    end
+    assert_redirected_to users_url
+  end
+  
+  test "should redirect delete when logged in as non-admin" do
+    log_in_as(@other_user)
+    assert_no_difference 'Issue.count' do
+      delete issue_url(@issue)
+    end
+    assert_redirected_to login_url
+  end
 end

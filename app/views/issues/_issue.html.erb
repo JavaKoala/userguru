@@ -6,4 +6,7 @@
     Posted <%= time_ago_in_words(issue.created_at) %> ago.
   </span>
   <span class="edit"><%= link_to "Edit", edit_issue_path(issue) %></span>
+  <% if admin_user? %>
+    <%= link_to "Delete", issue, method: :delete, data: { confirm: "You sure?" } %>
+  <% end %>
 </li>

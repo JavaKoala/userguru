@@ -80,10 +80,4 @@ class UsersController < ApplicationController
       end
     end
     
-    def admin_user
-      unless admin_user?
-        redirect_to login_url
-      end
-    end
-    
 end

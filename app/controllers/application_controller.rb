@@ -12,4 +12,11 @@ class ApplicationController < ActionController::Base
         redirect_to login_url
       end
     end
+
+    # Confirms an admin user
+    def admin_user
+      unless admin_user?
+        redirect_to login_url
+      end
+    end
 end

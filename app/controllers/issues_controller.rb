@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
   before_action :logged_in_user, only: [:new, :show, :create, :edit, :update, :destroy]
+  before_action :admin_user,     only: :destroy
   
   def new
     @issue = Issue.new
@@ -34,6 +35,9 @@ class IssuesController < ApplicationController
   end
   
   def destroy
+    Issue.find(params[:id]).destroy
+    flash[:success] = "Issue deleted"
+    redirect_to users_url
   end
   
   private
