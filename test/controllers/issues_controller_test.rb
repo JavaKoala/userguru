@@ -5,6 +5,8 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user  = users(:one)
     @user.roles << Role.where(name: 'customer')
+    @other_user = users(:two)
+    @other_user.roles << Role.where(name: 'representative')
     @issue = issues(:one)
   end
   
@@ -53,6 +55,26 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
                                            description: "test desciption", 
                                            user_id: "" } }
     end
+  end
+
+  test "should redirect show when not logged in" do
+    get issue_path(@issue)
+    assert_redirected_to login_url
+  end
+
+  test "should redirect edit when not logged in" do
+    get edit_issue_path(@issue)
+    assert_redirected_to login_url
+  end
+  
+  test "should edit issue" do
+    log_in_as(@user)
+    get edit_issue_path(@issue)
+    patch issue_path(@issue), params: { issue: { title: "new title",
+                                                 description: "new description" } }
+    assert_redirected_to issue_path(@issue)
+    assert @issue.title = "new title"
+    assert @issue.description = "new description"
   end
 
 end

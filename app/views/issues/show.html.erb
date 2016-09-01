@@ -1,8 +1,8 @@
 <div class="row">
   <h1>Issue #<%= @issue.id %> <%= link_to "Edit", edit_issue_path(@issue), class: "btn btn-primary" %></h1>
   <ul class="list-group">
-    <li class="list-group-item">Title: <%= @issue.title %>
-    <li class="list-group-item">Description: <%= @issue.description %>
-    <li class="list-group-item">Status: <%= @issue.status %>
+    <li class="list-group-item">Title: <%= @issue.title %></li>
+    <li class="list-group-item">Description: <%= @issue.description %></li>
+    <li class="list-group-item">Status: <%= @issue.status.humanize %></li>
   </ul>
 </div>
