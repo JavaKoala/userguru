@@ -158,6 +158,22 @@ input {
   }
 }
 
+/* Tables */
+table {
+  width: auto;
+}
+
+th, td {
+  border-bottom: 1px solid #bbb;
+  padding-left: 6px;
+  padding-right: 6px;
+  text-align: left;
+}
+
+td {
+  padding-top: 4px;
+}
+
 /* miscellaneous */
 
 .debug_dump {

@@ -18,9 +18,8 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_select "a[href=?]", edit_issue_path, count: 1
-    assert_select "li", /test title/
-    assert_select "li", /test description/
-    assert_select "li", /Open/
+    assert_select "td", /test title/
+    assert_select "td", /Open/
     @issue = Issue.find_by( title: "test title" )
     get edit_issue_path(@issue)
     patch issue_path(@issue), params: { issue: { title: "updated title",

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @issues = @user.issues.paginate(page: params[:page])
+    @issues = @user.issues.order(sort_column + " " + sort_direction)
   end
 
   def new
@@ -79,5 +79,4 @@ class UsersController < ApplicationController
         redirect_to login_url
       end
     end
-    
 end
