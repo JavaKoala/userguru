@@ -12,6 +12,7 @@ class IssuesController < ApplicationController
   
   def create
     @issue = Issue.new(issue_params)
+    @issue.user_issue = UserIssue.new
     if @issue.save
       flash[:success] = "New issue created"
       redirect_to @current_user
@@ -26,7 +27,11 @@ class IssuesController < ApplicationController
   
   def update
     @issue = Issue.find(params[:id])
+    @userissue = UserIssue.find(@issue.user_issue.id)
     if @issue.update_attributes(issue_params)
+      if internal_user?
+        @userissue.update_attributes(issue_id: @issue.id, user_id: params[:user_issue][:assigned_user])
+      end
       flash[:success] = "Issue updated"
       redirect_to issue_path(@issue)
     else
@@ -44,5 +49,9 @@ class IssuesController < ApplicationController
     
     def issue_params
       params.require(:issue).permit(:title, :description, :user_id, :status)
+    end
+    
+    def user_issue_params
+      params.require(:user_issue).pertmit(:assigned_user)
     end
 end

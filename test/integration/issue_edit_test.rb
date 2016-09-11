@@ -25,16 +25,18 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     patch issue_path(@issue), params: { issue: { title: "updated title",
                                                  description: "updated description",
                                                  status: :closed,
-                                                 user_id: @user.id } }
+                                                 user_id: @user.id },
+                                        user_issue: { assigned_user: @user.id} }
     follow_redirect!
     assert_response :success
     assert_select "a[href=?]", edit_issue_path, count: 1
     assert_select "li", /updated title/
     assert_select "li", /updated description/
     assert_select "li", /Closed/
+    assert_select "li", /Assigned to: #{@user.name}/
   end
   
-  test "customers cannot edit the status of issues" do
+  test "customers cannot edit the status and assigned user of issues" do
     log_in_as(@other_user)
     get new_issue_path
     post issues_path, params: { issue: { title: "test title", 
@@ -58,7 +60,7 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     @issue = Issue.find_by( title: "test title" )
     get edit_issue_path(@issue)
     patch issue_path(@issue), params: { issue: { title: '',
-                                                   description: '' } }
+                                                 description: '' } }
     assert_response :success
     assert @issue.title = "test title"
     assert @issue.title = "test description"

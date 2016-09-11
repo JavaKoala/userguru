@@ -19,10 +19,13 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     get new_issue_path
     assert_difference 'Issue.count', 1 do
-      post issues_path, params: { issue: { title: "test title", 
-                                           description: "test description", 
-                                           user_id: @user.id } }
-      follow_redirect!
+      # the new issue should also create a new UserIssue
+      assert_difference 'UserIssue.count', 1 do
+        post issues_path, params: { issue: { title: "test title", 
+                                             description: "test description", 
+                                             user_id: @user.id } }
+        follow_redirect!
+      end
     end
     assert_response :success
   end
@@ -69,12 +72,27 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
   
   test "should edit issue" do
     log_in_as(@user)
+    get new_issue_path
+    post issues_path, params: { issue: { title: "test title", 
+                                         description: "test description", 
+                                         user_id: @user.id } }
+    follow_redirect!
+    assert_response :success
+    @issue = Issue.find_by(title: "test title")
     get edit_issue_path(@issue)
     patch issue_path(@issue), params: { issue: { title: "new title",
                                                  description: "new description" } }
     assert_redirected_to issue_path(@issue)
     assert @issue.title = "new title"
     assert @issue.description = "new description"
+    # Test for assigned user
+    @user.roles << Role.where(name: 'representative')
+    get edit_issue_path(@issue)
+    patch issue_path(@issue), params: { issue: { title: "new title",
+                                                 description: "new description" }, 
+                                        user_issue: { assigned_user: @user.id } }
+    assert_redirected_to issue_path(@issue)
+    assert @issue.user_issue.user_id = @user.id
   end
 
   test "should redirect delete when not logged in" do

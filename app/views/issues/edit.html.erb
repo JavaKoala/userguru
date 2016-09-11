@@ -14,6 +14,9 @@
       <% if internal_user? %>
         <%= f.label :status %>
         <%= f.select :status, Issue.statuses.map { |key, value| [key.humanize, key] } %>
+
+        <%= f.label "Assigned User" %>
+        <%= collection_select(:user_issue, :assigned_user, User.all, :id, :name, {:selected => assigned_user_id(@issue)}) %>
       <% end %>
       
       <%= f.submit "Save changes", class: "btn btn-primary" %>
