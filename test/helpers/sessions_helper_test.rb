@@ -39,4 +39,10 @@ class SessionsHelperTest < ActionView::TestCase
     @user.roles << Role.where(name: 'representative')
     assert internal_user?
   end
+  
+  test "the user has to be logged in to be internal or admin" do
+    log_out
+    assert_not internal_user?
+    assert_not admin_user?
+  end
 end

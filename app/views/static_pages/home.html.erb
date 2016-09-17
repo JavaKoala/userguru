@@ -1,6 +1,17 @@
-<div class="center jumbotron">
-  <h1>Welcome to User Guru</h1>
-  <h2>Location for all your user needs</h2>
+<% if logged_in? %>
+  <% if internal_user? %>
+    <h1>Your Assigned Issues</h1>
+  <% else %>
+    <h1>Your Issues</h1>
+  <% end %>
+  <div align="center">
+    <%= render "layouts/issues_table" %>
+  </div>
+<% else %>
+  <div class="center jumbotron">
+    <h1>Welcome to User Guru</h1>
+    <h2>Location for all your user needs</h2>
   
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
-</div>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

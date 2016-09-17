@@ -28,6 +28,9 @@
     </nav>
     <% if logged_in? %>
       <%= link_to "New Issue", new_issue_path, class: "btn btn-primary pull-right" %>
+      <% if internal_user? %>
+        <%= link_to "Issues", issues_path, class: "btn btn-primary pull-right" %>
+      <% end %>
     <% end %>
   </div>
 </header>

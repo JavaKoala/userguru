@@ -21,6 +21,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # Confirms an internal user
+    def internal_user
+      unless internal_user?
+        redirect_to login_url
+      end
+    end
+
     # Give a column to sort on, default title
     def sort_column
       Issue.column_names.include?(params[:sort]) ? params[:sort] : "title"

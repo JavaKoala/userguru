@@ -1,7 +1,14 @@
 class IssuesController < ApplicationController
   before_action :logged_in_user, only: [:new, :show, :create, :edit, :update, :destroy]
+  before_action :internal_user,  only: :index
   before_action :admin_user,     only: :destroy
-  
+
+  def index
+    @issues = Issue.joins(:user_issue).where(user_issues: { user_id: nil })
+                                      .where.not(status: 'closed')
+                                      .order(sort_column + " " + sort_direction)
+  end
+
   def new
     @issue = Issue.new
   end

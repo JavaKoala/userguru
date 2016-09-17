@@ -15,6 +15,23 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_url
   end
 
+  test "should not display index unless logged in" do
+    get issues_path
+    assert_redirected_to login_url
+  end
+
+  test "should not display index unless internal user" do
+    log_in_as(@user)
+    get issues_path
+    assert_redirected_to login_url
+  end
+
+  test "should display index for an internal user" do
+    log_in_as(@other_user)
+    get issues_path
+    assert_response :success
+  end
+
   test "should create new issue" do
     log_in_as(@user)
     get new_issue_path
