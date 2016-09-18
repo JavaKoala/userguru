@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :roles, :through => :user_roles
   has_many :issues, dependent: :destroy
   has_many :user_issues, dependent: :nullify
+  has_many :comments, dependent: :destroy
   
   # Model validations
   validates :name, presence: true, length: { maximum: 50 }

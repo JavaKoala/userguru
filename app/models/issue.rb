@@ -3,6 +3,7 @@ class Issue < ApplicationRecord
   # Model Relations
   belongs_to :user
   has_one :user_issue, dependent: :destroy
+  has_many :comments, dependent: :destroy
   
   # Model Validations
   validates :user_id,     presence: true
