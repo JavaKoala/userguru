@@ -4,6 +4,16 @@ class CommentsController < ApplicationController
   before_action :admin_user,     only: :destroy
 
   def create
+    @comment = Comment.new(comment_params)
+    @issue   = Issue.find(params[:issue_id])
+    @comment.issue_id = @issue.id
+    @comment.user_id  = @current_user.id
+    if @comment.save
+      flash[:success] = "Comment created!"
+      redirect_to @issue
+    else
+      redirect_to @issue
+    end
   end
 
   def edit

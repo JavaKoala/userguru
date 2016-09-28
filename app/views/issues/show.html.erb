@@ -6,4 +6,5 @@
     <li class="list-group-item">Status: <%= @issue.status.humanize %></li>
     <li class="list-group-item">Assigned to: <%= assigned_user_name(@issue) %></li>
   </ul>
+  <%= render "shared/comment_form" %>
 </div>

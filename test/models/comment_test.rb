@@ -28,6 +28,11 @@ class CommentTest < ActiveSupport::TestCase
     assert_not @comment.valid?
   end
 
+  test "Issue should not be valid if the text is empty string" do
+    @comment = Comment.new(text: "", issue_id: @issue.id, user_id: @user.id)
+    assert_not @comment.valid?
+  end
+
   test "Issue should be valid if it has an inssue, user and the text is not too long" do
     @comment = Comment.new(text: "valid text", issue_id: @issue.id, user_id: @user.id)
     assert @comment.valid?
