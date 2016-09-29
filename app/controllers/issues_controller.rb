@@ -15,6 +15,7 @@ class IssuesController < ApplicationController
   
   def show
     @issue = Issue.find(params[:id])
+    @issue_comments = Comment.where(issue_id: @issue.id)
     @comment = Comment.new
   end
   
