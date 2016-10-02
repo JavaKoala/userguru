@@ -16,10 +16,15 @@ class CommentsController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
+    @comment = Comment.find(params[:id])
+    @issue   = Issue.find(params[:issue_id])
+    if @comment.update_attributes(comment_params)
+      flash[:success] = "Comment updated"
+      redirect_to @issue
+    else
+      redirect_to @issue
+    end
   end
 
   def destroy

@@ -1,6 +1,19 @@
 <% @issue_comments.each do |comment| %>
   <ul class="list-group">
-    <li class="list-group-item">Text: <%= comment.text %></li>
-    <li class="list-group-item">Updated: <%= time_ago_in_words(comment.updated_at) %> ago</li>
+    <li class="list-group-item">User: <%= commenter_name(comment[:user_id]) %></li>
+    <li class="list-group-item">Text: <%= comment[:text] %>
+      <% if user_comment?(comment[:user_id]) %>
+        <br>
+        <%= form_for(comment) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <div class="field">
+            <%= f.text_area :text %>
+          </div>
+          <%= hidden_field_tag :issue_id, @issue.id %>
+          <%= f.submit "Update Comment", class: "btn btn-primary" %>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="list-group-item">Updated: <%= time_ago_in_words(comment[:updated_at]) %> ago</li>
   </ul>
 <% end %>
