@@ -4,16 +4,26 @@
     <li class="list-group-item">Text: <%= comment[:text] %>
       <% if user_comment?(comment[:user_id]) %>
         <br>
-        <%= form_for(comment) do |f| %>
-          <%= render 'shared/error_messages', object: f.object %>
-          <div class="field">
-            <%= f.text_area :text %>
-          </div>
-          <%= hidden_field_tag :issue_id, @issue.id %>
-          <%= f.submit "Update Comment", class: "btn btn-primary" %>
-        <% end %>
+        <a id="comment_<%= comment[:id] %>">edit</a>
+        <div id="<%= comment[:id] %>" style="display: none">
+          <%= form_for(comment) do |f| %>
+            <%= render 'shared/error_messages', object: f.object %>
+            <div class="field">
+              <%= f.text_area :text %>
+            </div>
+            <%= hidden_field_tag :issue_id, @issue.id %>
+            <%= f.submit "Update Comment", class: "btn btn-primary" %>
+          <% end %>
+        </div>
       <% end %>
     </li>
     <li class="list-group-item">Updated: <%= time_ago_in_words(comment[:updated_at]) %> ago</li>
   </ul>
+  <script>
+    $( "#comment_<%= comment[:id] %>" ).click(function() {
+      $( "#<%= comment[:id] %>" ).toggle();
+    });
+  </script>
 <% end %>
+
+
