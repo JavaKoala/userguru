@@ -5,33 +5,30 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.new(comment_params)
-    @issue   = Issue.find(params[:issue_id])
-    @comment.issue_id = @issue.id
+    @comment.issue_id = current_issue.id
     @comment.user_id  = @current_user.id
     if @comment.save
       flash[:success] = "Comment created!"
-      redirect_to @issue
+      redirect_to current_issue
     else
-      redirect_to @issue
+      redirect_to current_issue
     end
   end
 
   def update
     @comment = Comment.find(params[:id])
-    @issue   = Issue.find(params[:issue_id])
     if @comment.update_attributes(comment_params)
       flash[:success] = "Comment updated"
-      redirect_to @issue
+      redirect_to current_issue
     else
-      redirect_to @issue
+      redirect_to current_issue
     end
   end
 
   def destroy
-    @issue = Issue.find(params[:issue_id])
     Comment.find(params[:id]).destroy
     flash[:success] = "Comment deleted"
-    redirect_to @issue
+    redirect_to current_issue
   end
 
   private
@@ -43,5 +40,10 @@ class CommentsController < ApplicationController
     def correct_user
       @comment = current_user.comments.find_by(id: params[:id])
       redirect_to root_url if @comment.nil?
+    end
+
+    def current_issue
+      @issue = Issue.find(params[:issue_id])
+      return @issue
     end
 end
