@@ -23,6 +23,12 @@
       <% end %>
     </li>
     <li class="list-group-item">Updated: <%= time_ago_in_words(comment[:updated_at]) %> ago</li>
+    <% if admin_user? %>
+      <li class="list-group-item">
+        <%= link_to "delete", comment_path(issue_id: @issue.id, id: comment.id), 
+                              method: :delete, data: { confirm: "You sure?" } %>
+      </li>
+    <% end %>
   </ul>
 <% end %>
 

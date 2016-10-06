@@ -28,6 +28,10 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @issue = Issue.find(params[:issue_id])
+    Comment.find(params[:id]).destroy
+    flash[:success] = "Comment deleted"
+    redirect_to @issue
   end
 
   private

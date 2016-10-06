@@ -69,4 +69,28 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert @comment.text = original_text
   end
+
+  test "should redirect delete when not logged in" do
+    assert_no_difference 'Comment.count' do
+      delete comment_path(@comment), params: { id: @comment.id,
+                                               issue_id: @issue.id }
+    end
+    assert_redirected_to login_url
+  end
+
+  test "should delete comment" do
+    log_in_as(@other_user)
+    assert_difference 'Comment.count', -1 do
+      delete comment_path(@comment), params: { id: @comment.id,
+                                               issue_id: @issue.id }
+    end
+  end
+
+  test "should not delete comment if not an admin user" do
+    log_in_as(@user)
+    assert_no_difference 'Comment.count' do
+      delete comment_path(@comment), params: { id: @comment.id,
+                                               issue_id: @issue.id }
+    end
+  end
 end
