@@ -7,6 +7,7 @@ class IssuesHelperTest < ActionView::TestCase
   def setup
     @user  = users(:one)
     @user.roles << Role.where(name: 'representative')
+    @other_user  = users(:two)
     @issue = issues(:one)
     @issue.user_issue = UserIssue.new
   end
@@ -36,5 +37,21 @@ class IssuesHelperTest < ActionView::TestCase
   test 'should return user id if there is an assigned user' do
     @issue.user_issue.user_id = @user.id
     assert assigned_user_id(@issue) == @user.id
+  end
+
+  test 'should return true if the user_id is the same as the current user' do
+    log_in_as(@user)
+    assert current_user == @user
+    assert user_comment?(@user.id) == true
+  end
+
+  test 'should return false if the user id is different than the current user' do
+    log_in_as(@user)
+    assert current_user == @user
+    assert user_comment?(@other_user.id) == false
+  end
+
+  test 'should return the users name' do
+    assert commenter_name(@user.id) == @user.name
   end
 end

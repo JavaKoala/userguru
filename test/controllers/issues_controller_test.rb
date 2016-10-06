@@ -86,6 +86,23 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
     get edit_issue_path(@issue)
     assert_redirected_to login_url
   end
+
+  test "issues show should include comments and new comments" do
+    log_in_as(@user)
+    get new_issue_path
+    post issues_path, params: { issue: { title: "test title", 
+                                         description: "test description", 
+                                         user_id: @user.id } }
+    follow_redirect!
+    assert_response :success
+    @issue = Issue.find_by(title: "test title")
+    get issue_path(@issue)
+    assert_response :success
+    post comments_path, params: { comment: { text: "comment title" },
+                                             issue_id: @issue.id }
+    follow_redirect!
+    assert_select "li", /comment title/
+  end
   
   test "should edit issue" do
     log_in_as(@user)

@@ -25,7 +25,7 @@ module IssuesHelper
 
   # returns true if the comment was created by the current user
   def user_comment?(user_id)
-    @current_user.id = user_id
+    @current_user.id == user_id
   end
   
   # returns the name of the person who created the comment

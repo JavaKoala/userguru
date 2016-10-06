@@ -15,15 +15,15 @@
             <%= f.submit "Update Comment", class: "btn btn-primary" %>
           <% end %>
         </div>
+        <script>
+          $( "#comment_<%= comment[:id] %>" ).click(function() {
+            $( "#<%= comment[:id] %>" ).toggle();
+          });
+        </script>
       <% end %>
     </li>
     <li class="list-group-item">Updated: <%= time_ago_in_words(comment[:updated_at]) %> ago</li>
   </ul>
-  <script>
-    $( "#comment_<%= comment[:id] %>" ).click(function() {
-      $( "#<%= comment[:id] %>" ).toggle();
-    });
-  </script>
 <% end %>
 
 
