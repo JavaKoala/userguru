@@ -11,7 +11,11 @@ class IssuesHelperTest < ActionView::TestCase
     @issue = issues(:one)
     @issue.user_issue = UserIssue.new
   end
-  
+
+  test 'should retrun the issue creators name' do
+    assert issue_creator_name(@issue) == @user.name
+  end
+
   test 'should return false if there is no assigned user' do
     assert has_assigned_user?(@issue) == false
   end

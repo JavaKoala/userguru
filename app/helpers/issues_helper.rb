@@ -1,5 +1,10 @@
 module IssuesHelper
 
+  # returns the person who created the issues name
+  def issue_creator_name(issue)
+    User.find(issue.user_id).name
+  end
+
   # returs true if the issue has an assinged user
   def has_assigned_user?(issue)
     !User.find_by(id: issue.user_issue.user_id).nil?

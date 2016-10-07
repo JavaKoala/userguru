@@ -6,6 +6,9 @@
       <li class="list-group-item">Description: <%= @issue.description %></li>
       <li class="list-group-item">Status: <%= @issue.status.humanize %></li>
       <li class="list-group-item">Assigned to: <%= assigned_user_name(@issue) %></li>
+      <% if internal_user? %>
+        <li class="list-group-item">Created by: <%= issue_creator_name(@issue) %></li>
+      <% end %>
     </ul>
   </aside>
   <div class="col-md-6">

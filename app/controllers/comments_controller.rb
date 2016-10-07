@@ -9,20 +9,16 @@ class CommentsController < ApplicationController
     @comment.user_id  = @current_user.id
     if @comment.save
       flash[:success] = "Comment created!"
-      redirect_to current_issue
-    else
-      redirect_to current_issue
     end
+    redirect_to current_issue
   end
 
   def update
     @comment = Comment.find(params[:id])
     if @comment.update_attributes(comment_params)
       flash[:success] = "Comment updated"
-      redirect_to current_issue
-    else
-      redirect_to current_issue
     end
+    redirect_to current_issue
   end
 
   def destroy
