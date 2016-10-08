@@ -8,11 +8,30 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
     @other_user = users(:two)
     @other_user.roles << Role.where(name: 'representative')
     @issue = issues(:one)
+    @issue.user_issue = UserIssue.new
+    @other_issue = issues(:two)
+    @other_issue.user_issue = UserIssue.new
   end
   
   test "should redirect when not logged in" do
     get new_issue_path
     assert_redirected_to login_url
+  end
+
+  test "show should only display for a logged in user" do
+    get issue_path(@issue)
+    assert_redirected_to login_url
+  end
+
+  test "show should only display for an internal or correct user" do
+    log_in_as(@user)
+    get issue_path(@issue)
+    assert_response :success
+    get issue_path(@other_issue)
+    assert_redirected_to root_url
+    @user.roles << Role.where(name: 'admin')
+    get issue_path(@other_issue)
+    assert_response :success
   end
 
   test "should not display index unless logged in" do
@@ -85,6 +104,15 @@ class IssuesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect edit when not logged in" do
     get edit_issue_path(@issue)
     assert_redirected_to login_url
+  end
+
+  test "should redirect edit when not the issue creator or an internal user" do
+    log_in_as(@user)
+    get edit_issue_path(@other_issue)
+    assert_redirected_to root_url
+    @user.roles << Role.where(name: 'admin')
+    get edit_issue_path(@other_issue)
+    assert_response :success
   end
 
   test "issues show should include comments and new comments" do

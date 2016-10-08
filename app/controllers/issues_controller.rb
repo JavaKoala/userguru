@@ -1,7 +1,8 @@
 class IssuesController < ApplicationController
-  before_action :logged_in_user, only: [:new, :show, :create, :edit, :update, :destroy]
-  before_action :internal_user,  only: :index
-  before_action :admin_user,     only: :destroy
+  before_action :logged_in_user,            only: [:new, :show, :create, :edit, :update, :destroy]
+  before_action :internal_user,             only: :index
+  before_action :internal_or_issue_creator, only: [:show, :edit, :update]
+  before_action :admin_user,                only: :destroy
 
   def index
     @issues = Issue.joins(:user_issue).where(user_issues: { user_id: nil })
@@ -62,5 +63,10 @@ class IssuesController < ApplicationController
     
     def user_issue_params
       params.require(:user_issue).pertmit(:assigned_user)
+    end
+
+    def internal_or_issue_creator
+      @issue = current_user.issues.find_by(id: params[:id])
+      redirect_to root_url if (@issue.nil? && !internal_user?)
     end
 end
