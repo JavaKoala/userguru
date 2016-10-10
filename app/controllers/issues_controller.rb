@@ -8,6 +8,7 @@ class IssuesController < ApplicationController
     @issues = Issue.joins(:user_issue).where(user_issues: { user_id: nil })
                                       .where.not(status: 'closed')
                                       .order(sort_column + " " + sort_direction)
+                                      .paginate(page: params[:page])
   end
 
   def new

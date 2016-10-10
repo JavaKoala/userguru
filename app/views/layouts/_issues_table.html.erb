@@ -13,6 +13,7 @@
         <th>Delete</th>
       <% end %>
     </tr>
+  <%= will_paginate %>
   <% @issues.each do |issue| %>
     <tr>
       <% if internal_user? %>
@@ -28,5 +29,6 @@
       <% end %>
     </tr>
   <% end %>
+  <% will_paginate %>
   </table>
 <div>
