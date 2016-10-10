@@ -30,7 +30,7 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_select "a[href=?]", edit_issue_path, count: 1
-    assert_select "li", /updated title/
+    assert_select "h1", /updated title/
     assert_select "li", /updated description/
     assert_select "li", /Closed/
     assert_select "li", /Assigned to: #{@user.name}/

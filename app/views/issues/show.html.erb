@@ -1,8 +1,7 @@
 <div class="row">
-  <h1>Issue #<%= @issue.id %> <%= link_to "Edit", edit_issue_path(@issue), class: "btn btn-primary" %></h1>
+  <h1><%= @issue.title %> <%= link_to "Edit", edit_issue_path(@issue), class: "btn btn-primary" %></h1>
   <aside class="col-md-6">
     <ul class="list-group">
-      <li class="list-group-item">Title: <%= @issue.title %></li>
       <li class="list-group-item">Description: <%= @issue.description %></li>
       <li class="list-group-item">Status: <%= @issue.status.humanize %></li>
       <li class="list-group-item">Assigned to: <%= assigned_user_name(@issue) %></li>
