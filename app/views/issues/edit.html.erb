@@ -9,7 +9,7 @@
       <%= f.text_field :title, class: 'form-control' %>
       
       <%= f.label :description %>
-      <%= f.email_field :description, class: 'form-control' %>
+      <%= f.text_area :description, class: 'form-control' %>
       
       <% if internal_user? %>
         <%= f.label :status %>

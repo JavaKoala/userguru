@@ -27,6 +27,7 @@ User.first.roles << Role.where(name: 'admin')
 title       = "Example issue"
 description = "This is an example issue"
 User.first.issues.create!(title: title, description: description)
+Issue.first.user_issue = UserIssue.new
 
 # Populate test database
 if Rails.env != 'production'
