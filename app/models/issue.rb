@@ -14,9 +14,9 @@ class Issue < ApplicationRecord
   enum status: [ :open, :in_progress, :waiting_on_customer, :resolved, :closed ]
 
   # Search for issues
-  def self.search(search)
-    if search
-      where("title LIKE ?", "%#{search}%")
+  def self.search(title, status)
+    if title
+      where("title LIKE ? AND status = ?", "%#{title}%", Issue.statuses[status] )
     else
       left_outer_joins(:user_issue).where(:user_issues => { :user_id => nil })
     end
