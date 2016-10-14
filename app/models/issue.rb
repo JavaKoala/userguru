@@ -13,17 +13,19 @@ class Issue < ApplicationRecord
   # Enumerate Status field
   enum status: [ :open, :in_progress, :waiting_on_customer, :resolved, :closed ]
 
+  # Find the issues for a given user_id
+  scope :user_assigned_issues, ->(assigned_user_id) { joins("INNER JOIN user_issues ON issues.id = user_issues.issue_id AND
+                                                                                       user_issues.user_id = #{assigned_user_id}") if assigned_user_id.present? }
+  # Find the issue title or description
+  scope :find_title_or_description, ->(search) { where("title LIKE ? OR description LIKE ?", "%#{search}%", "%#{search}%") if search.present? }
+
+  # Find the issues with a given status
+  scope :find_issues_with_status, ->(status) { where("status = ?", Issue.statuses[status]) if status.present? }
+
   # Search for issues
   def self.search(search, status, assigned_user_id)
-    print assigned_user_id
     if search
-      if assigned_user_id != ''
-        joins("INNER JOIN user_issues ON issues.id = user_issues.issue_id AND
-                                                     user_issues.user_id = #{assigned_user_id}").
-        where("(title LIKE ? OR description LIKE ?) AND status = ?", "%#{search}%", "%#{search}%", Issue.statuses[status] )
-      else
-        where("(title LIKE ? OR description LIKE ?) AND status = ?", "%#{search}%", "%#{search}%", Issue.statuses[status] )
-      end
+      user_assigned_issues(assigned_user_id).find_title_or_description(search).find_issues_with_status(status)
     else
       left_outer_joins(:user_issue).where(:user_issues => { :user_id => nil })
     end
