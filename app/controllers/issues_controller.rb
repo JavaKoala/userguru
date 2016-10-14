@@ -5,8 +5,8 @@ class IssuesController < ApplicationController
   before_action :admin_user,                only: :destroy
 
   def index
-    @issues = Issue.search(params[:title], params[:status]).order(sort_column + " " + sort_direction)
-                                                           .paginate(page: params[:page])
+    @issues = Issue.search(params[:search], params[:status]).order(sort_column + " " + sort_direction)
+                                                            .paginate(page: params[:page])
   end
 
   def new
