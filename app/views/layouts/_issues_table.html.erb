@@ -3,6 +3,7 @@
     <tr>
       <% if internal_user? %>
         <th><%= sortable "id" %></th>
+        <th><%= sortable "assigned user" %></th>
       <% end %>
       <th><%= sortable "title" %></th>
       <th><%= sortable "status" %></th>
@@ -18,6 +19,7 @@
     <tr>
       <% if internal_user? %>
         <td><%= issue.id %></td>
+        <td><%= assigned_user_name(issue) %></td>
       <% end %>
       <td><%= link_to issue.title, issue_path(issue) %></td>
       <td><%= issue.status.humanize %></td>
