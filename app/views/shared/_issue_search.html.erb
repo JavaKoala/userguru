@@ -1,11 +1,11 @@
-<h3>Search For issue</h3>
+<h4 align="left">Search For issue</h4>
 <%= form_tag issues_path, :method => 'get' do %>
-  <h4 align="left">search</h4>
+  <h5 align="left">search</h5>
   <%= text_field_tag :search, params[:search] %>
-  <h4 align="left">status</h4>
+  <h5 align="left">status</h5>
   <%= select_tag :status, options_for_select(Issue.statuses.map { |key, value| [key.humanize, key] }), include_blank: true %>
   <% if internal_user? %>
-    <h4 align="left">assigned user</h4>
+    <h5 align="left">assigned user</h5>
     <%= select_tag :assigned_user_id, options_for_select(User.all.map { |user| [user.name, user.id] }), include_blank: true %>
   <% end %>
   <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
