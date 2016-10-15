@@ -7,6 +7,8 @@ class IssueEditTest < ActionDispatch::IntegrationTest
     @user.roles << Role.where(name: 'representative')
     @other_user = users(:two)
     @other_user.roles << Role.where(name: 'customer')
+    @issue = issues(:one)
+    @issue.user_issue = UserIssue.new
   end
   
   test "issue edit test" do

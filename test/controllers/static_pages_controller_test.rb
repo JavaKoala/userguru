@@ -5,6 +5,8 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:one)
     @user.roles << Role.where(name: 'representative')
+    @issue = issues(:one)
+    @issue.user_issue = UserIssue.new
   end
 
   test "should get help" do
