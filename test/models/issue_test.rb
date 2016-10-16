@@ -52,20 +52,28 @@ class IssueTest < ActiveSupport::TestCase
     assert Issue.find_issues_with_status(nil) == Issue.all
   end
 
+  test "find_issues_created_by_user should return all the issues if the status is nil" do
+    assert Issue.find_issues_created_by_user(nil) == Issue.all
+  end
+
   test "search should retun unassigned issues if search is nil" do
-    assert Issue.search("", "", "") == Issue.all
+    assert Issue.search("", "", "", "") == Issue.all
   end
 
   test "search should look in title" do
-    assert Issue.search("first", "", "")[0] == @issue
+    assert Issue.search("first", "", "", "")[0] == @issue
   end
 
   test "search should look in description" do
-    assert Issue.search("LOL", "", "")[0] == @issue
+    assert Issue.search("LOL", "", "", "")[0] == @issue
   end
 
   test "search should find status" do
-    assert Issue.search("", @other_issue.status, "")[0] == @other_issue
+    assert Issue.search("", @other_issue.status, "", "")[0] == @other_issue
+  end
+
+  test "search should find issues crated by user" do
+    assert Issue.search("", "", "", @other_user.id)[0] == @other_issue
   end
 
   test "user serach should return assigned issue" do

@@ -7,7 +7,8 @@ class IssuesController < ApplicationController
     if internal_user?
       @issues = Issue.search(params[:search], 
                              params[:status], 
-                             params[:assigned_user_id]).order(sort_column + " " + sort_direction)
+                             params[:assigned_user_id],
+                             params[:creator_user_id]).order(sort_column + " " + sort_direction)
                                                        .paginate(page: params[:page])
     else
       @issues = Issue.user_search(params[:search], 

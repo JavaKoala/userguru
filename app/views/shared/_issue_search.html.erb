@@ -7,6 +7,8 @@
   <% if internal_user? %>
     <h5 align="left">assigned user</h5>
     <%= select_tag :assigned_user_id, options_for_select(User.all.map { |user| [user.name, user.id] }), include_blank: true %>
+    <h5 align="left">issue creator</h5>
+    <%= select_tag :creator_user_id, options_for_select(User.all.map { |user| [user.name, user.id] }), include_blank: true %>
   <% end %>
   <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
 <% end %>
