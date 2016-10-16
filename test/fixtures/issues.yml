@@ -9,3 +9,4 @@ two:
   title: "second title"
   description: "wow, a second issue?"
   user: two
+  status: 1

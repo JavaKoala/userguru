@@ -4,7 +4,11 @@ class IssueTest < ActiveSupport::TestCase
   
   def setup
     @user = users(:one)
-    @issue = Issue.new(title: "test title", description: "I have a problem", user_id: @user.id)
+    @other_user = users(:two)
+    @issue = issues(:one)
+    @user_issue = UserIssue.new(issue_id: @issue.id, user_id: @other_user.id)
+    @other_issue = issues(:two)
+    @other_issue.user_issue = UserIssue.new
   end
   
   test "issue should be valid" do
@@ -34,5 +38,33 @@ class IssueTest < ActiveSupport::TestCase
   test "description should not be too long" do
     @issue.description = "a" * 256
     assert_not @issue.valid?
+  end
+
+  test "user_assigned_issues should return all the issues if assigned_user_id is nil" do
+    assert Issue.user_assigned_issues(nil) == Issue.all
+  end
+
+  test "find_title_or_description should return all the issues if search is nil" do
+    assert Issue.find_title_or_description(nil) == Issue.all
+  end
+
+  test "find_issues_with_status should return all the issues if the status is nil" do
+    assert Issue.find_issues_with_status(nil) == Issue.all
+  end
+
+  test "search should retun unassigned issues if search is nil" do
+    assert Issue.search("", "", "") == Issue.all
+  end
+
+  test "search should look in title" do
+    assert Issue.search("first", "", "")[0] == @issue
+  end
+
+  test "search should look in description" do
+    assert Issue.search("LOL", "", "")[0] == @issue
+  end
+
+  test "search should find status" do
+    assert Issue.search("", @other_issue.status, "")[0] == @other_issue
   end
 end
