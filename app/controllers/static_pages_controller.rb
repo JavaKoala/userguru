@@ -7,7 +7,8 @@ class StaticPagesController < ApplicationController
                                           .order(sort_column + " " + sort_direction)
                                           .paginate(page: params[:page])
       else
-        @issues = current_user.issues.order(sort_column + " " + sort_direction)
+        @issues = current_user.issues.where.not(status: 'closed')
+                                     .order(sort_column + " " + sort_direction)
                                      .paginate(page: params[:page])
       end
       # need to assign @static_pages for will_paginate
