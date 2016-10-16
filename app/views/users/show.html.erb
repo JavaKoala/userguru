@@ -8,7 +8,7 @@
   </aside>
   <div class="col-md-8">
     <% if @user.issues.any? %>
-      <h3>My Issues (<%= @user.issues.count %>)</h3>
+      <h3>My Issues (<%= @user.issues.where.not(status: 'closed').count %>)</h3>
       <%= render 'layouts/issues_table' %>
     <% end %>
   </div>
