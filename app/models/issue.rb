@@ -30,4 +30,9 @@ class Issue < ApplicationRecord
       left_outer_joins(:user_issue).where(:user_issues => { :user_id => nil })
     end
   end
+
+  # Search for user issues
+  def self.user_search(search, status, user_id)
+    find_title_or_description(search).find_issues_with_status(status).where("user_id = ?", "#{user_id}")
+  end
 end

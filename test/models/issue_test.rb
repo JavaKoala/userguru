@@ -67,4 +67,24 @@ class IssueTest < ActiveSupport::TestCase
   test "search should find status" do
     assert Issue.search("", @other_issue.status, "")[0] == @other_issue
   end
+
+  test "user serach should return assigned issue" do
+    assert Issue.user_search("", "", @user.id)[0] == @issue
+  end
+
+  test "user search should return nothing if user_id is not passed in" do
+    assert Issue.user_search("", "", "").empty?
+  end
+
+  test "user search should look in title" do
+    assert Issue.user_search("first", "", @user.id)[0] == @issue
+  end
+
+  test "user search should look in description" do
+    assert Issue.user_search("LOL", "", @user.id)[0] == @issue
+  end
+
+  test "user search should find status" do
+    assert Issue.user_search("", @other_issue.status, @other_user.id)[0] == @other_issue
+  end
 end

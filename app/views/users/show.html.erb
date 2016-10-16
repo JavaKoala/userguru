@@ -4,9 +4,10 @@
       <h1>
         <%= @user.name %>
       </h1>
+      <%= render "shared/issue_search" %>
     </section>
   </aside>
-  <div class="col-md-8">
+  <div class="col-md-8" align="center">
     <% if @user.issues.any? %>
       <h3>My Issues (<%= @user.issues.where.not(status: 'closed').count %>)</h3>
       <%= render 'layouts/issues_table' %>

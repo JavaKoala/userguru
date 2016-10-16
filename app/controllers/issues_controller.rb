@@ -1,14 +1,20 @@
 class IssuesController < ApplicationController
-  before_action :logged_in_user,            only: [:new, :show, :create, :edit, :update, :destroy]
-  before_action :internal_user,             only: :index
+  before_action :logged_in_user,            only: [:index, :new, :show, :create, :edit, :update, :destroy]
   before_action :internal_or_issue_creator, only: [:show, :edit, :update]
   before_action :admin_user,                only: :destroy
 
   def index
-    @issues = Issue.search(params[:search], 
-                           params[:status], 
-                           params[:assigned_user_id]).order(sort_column + " " + sort_direction)
-                                                     .paginate(page: params[:page])
+    if internal_user?
+      @issues = Issue.search(params[:search], 
+                             params[:status], 
+                             params[:assigned_user_id]).order(sort_column + " " + sort_direction)
+                                                       .paginate(page: params[:page])
+    else
+      @issues = Issue.user_search(params[:search], 
+                                  params[:status], 
+                                  current_user.id).order(sort_column + " " + sort_direction)
+                                                  .paginate(page: params[:page])
+    end
   end
 
   def new
