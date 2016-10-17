@@ -76,6 +76,10 @@ class IssueTest < ActiveSupport::TestCase
     assert Issue.search("", "", "", @other_user.id)[0] == @other_issue
   end
 
+  test "search should not find issue that does not exist" do
+    assert_empty Issue.search("LOL", @other_issue.status, @user.id, @other_user.id)
+  end
+
   test "user serach should return assigned issue" do
     assert Issue.user_search("", "", @user.id)[0] == @issue
   end
