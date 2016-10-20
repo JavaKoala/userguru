@@ -58,6 +58,9 @@ class User < ApplicationRecord
   def activate
     update_attribute(:activated, true)
     update_attribute(:activated_at, Time.now)
+    User.admin_users.each do |admin_user| 
+      UserMailer.new_user_activated(self, admin_user).deliver_now
+    end
   end
 
   # Send the activation email
@@ -80,6 +83,11 @@ class User < ApplicationRecord
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
   end
+
+  # Returns a collection of the admin users
+  scope :admin_users, -> { joins("INNER JOIN user_roles ON users.id = user_roles.user_id
+                                  INNER JOIN roles ON user_roles.role_id = roles.id").
+                           where("roles.name = ?", "admin") }
 
   private
   
