@@ -10,7 +10,7 @@ class AccountActivationsController < ApplicationController
       user.roles << Role.where(name: 'customer')
       log_in user
       flash[:success] = "Account activated!"
-      redirect_to user
+      redirect_to new_issue_path
     else
       flash[:danger] = "Invalid activation link"
       redirect_to root_url
