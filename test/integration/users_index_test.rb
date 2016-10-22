@@ -32,6 +32,8 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_redirected_to login_url
     @user.roles << Role.where(name: 'representative')
+    assert_redirected_to login_url
+    @user.roles << Role.where(name: 'admin')
     get users_path
     assert_response :success
     User.paginate(page: 1).each do |user|
