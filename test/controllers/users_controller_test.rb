@@ -7,6 +7,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @user.roles << Role.where(name: 'customer')
     @other_user = users(:two)
     @other_user.roles << Role.where(name: 'customer')
+    @other_issue = issues(:two)
+    @other_issue.user_issue = UserIssue.new
   end
 
   test "should get new" do
@@ -42,5 +44,18 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@other_user)
     patch user_path(@user), params: { user: { name: @user.name, email: @user.email } }
     assert_redirected_to login_url
+  end
+
+  test "should redirect show when logged in with customer role" do
+    log_in_as(@user)
+    get user_path(@other_user)
+    assert_redirected_to login_url
+  end
+
+  test "should not redirect show with an admin user" do
+    @user.roles << Role.where(name: 'admin')
+    log_in_as(@user)
+    get user_path(@other_user)
+    assert_response :success
   end
 end
