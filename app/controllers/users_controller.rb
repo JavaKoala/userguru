@@ -58,16 +58,7 @@ class UsersController < ApplicationController
     end
     
     # Before filters
-    
-    # Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
-    
+
     # Confirms the correct user
     def correct_or_admin_user
       @user = User.find(params[:id]) 
@@ -75,11 +66,5 @@ class UsersController < ApplicationController
         redirect_to(login_url)
       end
     end
-    
-    # Confirms an internal user
-    def internal_user
-      unless internal_user?
-        redirect_to login_url
-      end
-    end
+
 end
