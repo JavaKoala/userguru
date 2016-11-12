@@ -10,12 +10,16 @@ module IssuesHelper
     !User.find_by(id: issue.user_issue.user_id).nil?
   end
 
-  # returns the assigned users name or Not Assigned
+  # returns the assigned users name or directs that a user will be assigned
   def assigned_user_name(issue)
     if has_assigned_user?(issue)
       User.find_by(id: issue.user_issue.user_id).name
     else
-      "A representative will be assigned shortly"
+      if internal_user?
+        "Please assign user"
+      else
+        "A representative will be assigned shortly"
+      end
     end
   end
   
