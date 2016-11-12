@@ -26,7 +26,7 @@ class IssuesHelperTest < ActionView::TestCase
   end
   
   test 'should return Not Assigned if there is no assigned user' do
-    assert assigned_user_name(@issue) == "Not Assigned"
+    assert assigned_user_name(@issue) == "A representative will be assigned shortly"
   end
   
   test 'should return user name if there is an assigned user' do

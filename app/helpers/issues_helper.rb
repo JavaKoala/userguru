@@ -15,7 +15,7 @@ module IssuesHelper
     if has_assigned_user?(issue)
       User.find_by(id: issue.user_issue.user_id).name
     else
-      "Not Assigned"
+      "A representative will be assigned shortly"
     end
   end
   
