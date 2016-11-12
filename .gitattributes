@@ -1,5 +1,3 @@
-config/deploy/deploy.rb    export-ignore
-config/deploy/             export-ignore
-config/database.yml        export-ignore
-config/secrets.yml         export-ignore
-environments/production.rb export-ignore
+config/database.yml               export-ignore
+config/secrets.yml                export-ignore
+config/environments/production.rb export-ignore
