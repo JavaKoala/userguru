@@ -5,11 +5,8 @@ class IssuesController < ApplicationController
 
   def index
     if internal_user?
-      @issues = Issue.search(params[:search], 
-                             params[:status], 
-                             params[:assigned_user_id],
-                             params[:creator_user_id]).order(sort_column + " " + sort_direction)
-                                                       .paginate(page: params[:page])
+      @issues = Issue.search(issue_search_params).order(sort_column + " " + sort_direction)
+                                                 .paginate(page: params[:page])
     else
       @issues = Issue.user_search(params[:search], 
                                   params[:status], 
@@ -71,6 +68,10 @@ class IssuesController < ApplicationController
     
     def user_issue_params
       params.require(:user_issue).pertmit(:assigned_user)
+    end
+
+    def issue_search_params
+      params.permit(:search, :status, :assigned_user_id, :creator_user_id)
     end
 
     def internal_or_issue_creator

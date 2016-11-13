@@ -26,11 +26,11 @@ class Issue < ApplicationRecord
   scope :find_issues_created_by_user, ->(creator_user_id) { where("issues.user_id = ?", "#{creator_user_id}") if creator_user_id.present? }
 
   # Search for issues
-  def self.search(search, status, assigned_user_id, creator_user_id)
-    if search
-      user_assigned_issues(assigned_user_id).find_title_or_description(search)
-                                            .find_issues_with_status(status)
-                                            .find_issues_created_by_user(creator_user_id)
+  def self.search(issue_search_params)
+    if issue_search_params
+      user_assigned_issues(issue_search_params[:assigned_user_id]).find_title_or_description(issue_search_params[:search])
+                                                                  .find_issues_with_status(issue_search_params[:status])
+                                                                  .find_issues_created_by_user(issue_search_params[:creator_user_id])
     else
       left_outer_joins(:user_issue).where(:user_issues => { :user_id => nil })
     end
