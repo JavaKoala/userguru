@@ -4,15 +4,15 @@ class IssuesController < ApplicationController
   before_action :admin_user,                only: :destroy
 
   def index
+    # If the user is not internal then we need to add the user_id to the search so that
+    # we only look for that user's issues
     if internal_user?
-      @issues = Issue.search(issue_search_params).order(sort_column + " " + sort_direction)
-                                                 .paginate(page: params[:page])
+      issue_search = { search_params: issue_search_params }
     else
-      @issues = Issue.user_search(params[:search], 
-                                  params[:status], 
-                                  current_user.id).order(sort_column + " " + sort_direction)
-                                                  .paginate(page: params[:page])
+      issue_search = { search_params: issue_search_params, user_id: current_user.id }
     end
+    @issues = Issue.search(issue_search).order(sort_column + " " + sort_direction)
+                                        .paginate(page: params[:page])
   end
 
   def new

@@ -58,51 +58,67 @@ class IssueTest < ActiveSupport::TestCase
 
   test "search should retun unassigned issues if search is nil" do
     issue_search_params = { search: "", status: "", assigned_user_id: "", creator_user_id: "" }
-    assert Issue.search(issue_search_params) == Issue.all
+    issue_search = { search_params: issue_search_params }
+    assert Issue.search(issue_search) == Issue.all
   end
 
   test "search should look in title" do
     issue_search_params = { search: "first", status: "", assigned_user_id: "", creator_user_id: "" }
-    assert Issue.search(issue_search_params)[0] == @issue
+    issue_search = { search_params: issue_search_params }
+    assert Issue.search(issue_search)[0] == @issue
   end
 
   test "search should look in description" do
     issue_search_params = { search: "LOL", status: "", assigned_user_id: "", creator_user_id: "" }
-    assert Issue.search(issue_search_params)[0] == @issue
+    issue_search = { search_params: issue_search_params }
+    assert Issue.search(issue_search)[0] == @issue
   end
 
   test "search should find status" do
     issue_search_params = { search: "", status:  @other_issue.status, assigned_user_id: "", creator_user_id: "" }
-    assert Issue.search(issue_search_params)[0] == @other_issue
+    issue_search = { search_params: issue_search_params }
+    assert Issue.search(issue_search)[0] == @other_issue
   end
 
   test "search should find issues crated by user" do
     issue_search_params = { search: "", status:  "", assigned_user_id: "", creator_user_id: @other_user.id }
-    assert Issue.search(issue_search_params)[0] == @other_issue
+    issue_search = { search_params: issue_search_params }
+    assert Issue.search(issue_search)[0] == @other_issue
   end
 
   test "search should not find issue that does not exist" do
     issue_search_params = { search: "LOL", status:  @other_issue.status, assigned_user_id: @user.id, creator_user_id: @other_user.id }
-    assert_empty Issue.search(issue_search_params)
+    issue_search = { search_params: issue_search_params }
+    assert_empty Issue.search(issue_search)
   end
 
   test "user serach should return assigned issue" do
-    assert Issue.user_search("", "", @user.id)[0] == @issue
+    issue_search_params = { search: "", status: "" }
+    issue_search = { search_params: issue_search_params, user_id: @user.id }
+    assert Issue.search(issue_search)[0] == @issue
   end
 
   test "user search should return nothing if user_id is not passed in" do
-    assert Issue.user_search("", "", "").empty?
+    issue_search_params = { search: "", status: "" }
+    issue_search = { search_params: issue_search_params, user_id: "" }
+    assert Issue.search(issue_search).empty?
   end
 
   test "user search should look in title" do
-    assert Issue.user_search("first", "", @user.id)[0] == @issue
+    issue_search_params = { search: "first", status: "" }
+    issue_search = { search_params: issue_search_params, user_id: @user.id }
+    assert Issue.search(issue_search)[0] == @issue
   end
 
   test "user search should look in description" do
-    assert Issue.user_search("LOL", "", @user.id)[0] == @issue
+    issue_search_params = { search: "LOL", status: "" }
+    issue_search = { search_params: issue_search_params, user_id: @user.id }
+    assert Issue.search(issue_search)[0] == @issue
   end
 
   test "user search should find status" do
-    assert Issue.user_search("", @other_issue.status, @other_user.id)[0] == @other_issue
+    issue_search_params = { search: "", status: @other_issue.status }
+    issue_search = { search_params: issue_search_params, user_id: @other_user.id }
+    assert Issue.search(issue_search)[0] == @other_issue
   end
 end
