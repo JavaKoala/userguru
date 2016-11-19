@@ -2,13 +2,13 @@
   <table>
     <tr>
       <% if internal_user? %>
-        <th><%= sortable "id" %></th>
-        <th><%= sortable "assigned user" %></th>
+        <th><%= issue_sortable "id" %></th>
+        <th><%= issue_sortable "assigned user" %></th>
       <% end %>
-      <th><%= sortable "title" %></th>
-      <th><%= sortable "status" %></th>
-      <th><%= sortable "updated_at" %></th>
-      <th><%= sortable "created_at" %></th>
+      <th><%= issue_sortable "title" %></th>
+      <th><%= issue_sortable "status" %></th>
+      <th><%= issue_sortable "updated_at" %></th>
+      <th><%= issue_sortable "created_at" %></th>
       <th>Edit</th>
       <% if admin_user? %>
         <th>Delete</th>

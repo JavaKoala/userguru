@@ -41,4 +41,15 @@ module IssuesHelper
   def commenter_name(user_id)
     User.find(user_id).name
   end
+
+  # returns issue search and sort. Includes the issue search params
+  def issue_sortable(column, title = nil)
+    title ||= column.titleize
+    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+    link_to title, { sort: column, direction: direction,
+                                   search: params[:search],
+                                   status: params[:status],
+                                   assigned_user_id: params[:assigned_user_id],
+                                   creator_user_id: params[:creator_user_id] }
+  end
 end
