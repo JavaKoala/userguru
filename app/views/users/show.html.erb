@@ -1,11 +1,9 @@
 <div class="row">
   <aside class="col-md-4">
-    <section class="user_info">
-      <h1>
-        <%= @user.name %>
-      </h1>
-      <%= render "shared/issue_search" %>
-    </section>
+    <h3>
+      <%= @user.name %>
+    </h3>
+    <%= render "shared/issue_search" %>
   </aside>
   <div class="col-md-8" align="center">
     <% if @user.issues.any? %>
