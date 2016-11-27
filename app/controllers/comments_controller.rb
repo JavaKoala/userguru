@@ -9,6 +9,8 @@ class CommentsController < ApplicationController
     @comment.user_id  = @current_user.id
     if @comment.save
       flash[:success] = "Comment created!"
+    else
+      flash[:danger] = @comment.errors.full_messages[0]
     end
     redirect_to current_issue
   end

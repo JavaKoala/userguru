@@ -38,6 +38,15 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should flash message if comment is too long" do
+    log_in_as(@user)
+    get @issue_path
+    comment_text = "a" * 256
+    post comments_path, params: { comment: { text: comment_text },
+                                    issue_id: @issue.id }
+    assert_not flash.empty?
+  end
+
   test "should update comment" do
     log_in_as(@user)
     get @issue_path
