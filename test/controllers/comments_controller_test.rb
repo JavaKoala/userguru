@@ -35,16 +35,19 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Comment.count' do
       post comments_path, params: { comment: { text: "" },
                                     issue_id: @issue.id }
+      assert_not flash.empty?
     end
   end
 
-  test "should flash message if comment is too long" do
+  test "should not create comment if text is too long" do
     log_in_as(@user)
     get @issue_path
     comment_text = "a" * 256
-    post comments_path, params: { comment: { text: comment_text },
+    assert_no_difference 'Comment.count' do
+      post comments_path, params: { comment: { text: comment_text },
                                     issue_id: @issue.id }
-    assert_not flash.empty?
+      assert_not flash.empty?
+    end
   end
 
   test "should update comment" do
@@ -72,7 +75,21 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     original_text = @comment.text
     log_in_as(@user)
     get @issue_path
+    assert_not @comment.update_attributes(text: "", issue_id: @issue.id)
     patch comment_path(@comment), params: { comment: { text: "",
+                                                       issue_id: @issue.id } }
+    follow_redirect!
+    assert_response :success
+    assert @comment.text = original_text
+  end
+
+  test "should not update comment if the text too long" do
+    original_text = @comment.text
+    log_in_as(@user)
+    get @issue_path
+    comment_text = "a" * 256
+    assert_not @comment.update_attributes(text: comment_text, issue_id: @issue.id)
+    patch comment_path(@comment), params: { comment: { text: comment_text,
                                                        issue_id: @issue.id } }
     follow_redirect!
     assert_response :success

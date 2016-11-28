@@ -19,6 +19,8 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     if @comment.update_attributes(comment_params)
       flash[:success] = "Comment updated"
+    else
+      flash[:danger] = @comment.errors.full_messages[0]
     end
     redirect_to current_issue
   end
