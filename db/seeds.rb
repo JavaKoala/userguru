@@ -29,6 +29,15 @@ description = "This is an example issue"
 User.first.issues.create!(title: title, description: description)
 Issue.first.user_issue = UserIssue.new
 
+# Create Settings seeds
+setting_names = ["application_name",
+                 "tagline_1",
+                 "tagline_2"]
+
+setting_names.each do |setting_name|
+  Setting.create!(name: setting_name, value: "")
+end
+
 # Populate test database
 if Rails.env != 'production'
   99.times do |n|

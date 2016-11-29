@@ -1,0 +1,14 @@
+<div>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+    </tr>
+    <% @settings.each do |setting| %>
+      <tr>
+        <td><%= setting.name.humanize %></td>
+        <td><%= setting.value %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
