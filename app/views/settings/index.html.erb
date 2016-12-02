@@ -1,13 +1,31 @@
 <div>
-  <table>
+  <table class="table">
     <tr>
       <th>Name</th>
       <th>Value</th>
+      <th>Edit</th>
     </tr>
     <% @settings.each do |setting| %>
       <tr>
         <td><%= setting.name.humanize %></td>
         <td><%= setting.value %></td>
+        <td><a id="setting_<%= setting[:id] %>">edit</a></td>
+      </tr>
+      <tr id="<%= setting[:id] %>" style="display: none">
+        <td></td>
+        <td>
+          <%= form_for(setting) do |f| %>
+            <%= f.text_field :value %>
+        </td>
+        <td>
+            <%= f.submit "Update Setting", class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </td>
+        <script>
+          $( "#setting_<%= setting[:id] %>" ).click(function() {
+            $( "#<%= setting[:id] %>" ).toggle();
+          });
+        </script>
       </tr>
     <% end %>
   </table>
