@@ -11,7 +11,8 @@
             <li><%= link_to "Home",  root_path %></li>
             <% if logged_in? %>
               <% if admin_user? %>
-                <li><%= link_to "Users",  users_path %></li>
+                <li><%= link_to "Users",        users_path %></li>
+                <li><%= link_to "App Settings", settings_path %></li>
               <% end %>
               <li><%= link_to "Profile",  current_user %></li>
               <li><%= link_to "Settings", edit_user_path(current_user) %></li>
