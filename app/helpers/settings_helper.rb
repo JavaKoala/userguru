@@ -10,7 +10,7 @@ module SettingsHelper
     when "tagline_2"
       "Location for all your user needs"
     else
-      ""
+      setting_name
     end
   end
 
@@ -28,7 +28,7 @@ module SettingsHelper
         setting.value
       end
     else
-      setting_name
+      default_setting_value(setting_name)
     end
   end
 end
