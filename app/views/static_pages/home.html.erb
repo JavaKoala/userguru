@@ -9,8 +9,8 @@
   </div>
 <% else %>
   <div class="center jumbotron">
-    <h1>Welcome to User Guru</h1>
-    <h2>Location for all your user needs</h2>
+    <h1><%= setting_value('tagline_1') %></h1>
+    <h2><%= setting_value('tagline_2') %></h2>
   
     <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
   </div>
