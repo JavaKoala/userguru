@@ -9,6 +9,8 @@ module SettingsHelper
       "Welcome to User Guru"
     when "tagline_2"
       "Location for all your user needs"
+    when "default_email"
+      "no-reply@user.guru"
     else
       setting_name
     end
