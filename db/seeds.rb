@@ -32,7 +32,8 @@ Issue.first.user_issue = UserIssue.new
 # Create Settings seeds
 setting_names = ["application_name",
                  "tagline_1",
-                 "tagline_2"]
+                 "tagline_2",
+                 "default_email"]
 
 setting_names.each do |setting_name|
   Setting.create!(name: setting_name, value: "")

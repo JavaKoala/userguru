@@ -14,3 +14,8 @@ three:
   id: 3
   name: tagline_2
   value: ""
+
+four:
+  id: 4
+  name: default_email
+  value: ""
