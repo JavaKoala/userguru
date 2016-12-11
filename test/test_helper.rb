@@ -32,7 +32,15 @@ class ActiveSupport::TestCase
     users(:customer1).roles               << Role.where(name: 'customer')
     users(:customer2).roles               << Role.where(name: 'customer')
   end
-  
+
+  # Adds a new UserIssue to each issue so issue index can be displayed
+  def add_user_issue
+    issues = Issue.all
+    issues.each do |issue|
+      issue.user_issue = UserIssue.new
+    end
+  end
+
   private
   
     # Returns true inside an integration test
