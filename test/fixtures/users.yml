@@ -28,6 +28,13 @@ representative:
   activated: true
   activated_at: <%= Time.now %>
 
+customer_representative:
+  name: customer_representative
+  email: customer_representative@test.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.now %>
+
 customer1:
   name: customer1
   email: customer1@test.com
