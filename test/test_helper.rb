@@ -25,9 +25,10 @@ class ActiveSupport::TestCase
   end
 
   def add_roles_to_users
-    users(:admin_user).roles << Role.where(name: 'admin')
-    users(:customer1).roles  << Role.where(name: 'customer')
-    users(:customer2).roles  << Role.where(name: 'customer')
+    users(:admin_user).roles     << Role.where(name: 'admin')
+    users(:representative).roles << Role.where(name: 'representative')
+    users(:customer1).roles      << Role.where(name: 'customer')
+    users(:customer2).roles      << Role.where(name: 'customer')
   end
   
   private

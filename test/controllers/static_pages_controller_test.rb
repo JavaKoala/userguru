@@ -3,8 +3,8 @@ require 'test_helper'
 class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:one)
-    @user.roles << Role.where(name: 'representative')
+    @representative_user = users(:representative)
+    add_roles_to_users
     @issue = issues(:one)
     @issue.user_issue = UserIssue.new
   end
@@ -34,7 +34,7 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "@static_pages should be empty" do
-    log_in_as(@user)
+    log_in_as(@representative_user)
     follow_redirect!
     assert_response :success
     assert @static_pages.nil?
