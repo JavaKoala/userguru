@@ -23,6 +23,12 @@ class ActiveSupport::TestCase
       session[:user_id] = user.id
     end
   end
+
+  def add_roles_to_users
+    users(:admin_user).roles << Role.where(name: 'admin')
+    users(:customer1).roles  << Role.where(name: 'customer')
+    users(:customer2).roles  << Role.where(name: 'customer')
+  end
   
   private
   
