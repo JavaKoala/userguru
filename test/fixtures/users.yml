@@ -14,6 +14,27 @@ two:
   activated: true
   activated_at: <%= Time.now %>
 
+admin_user:
+  name: admin_user
+  email: admin_user@test.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.now %>
+
+customer1:
+  name: customer1
+  email: customer1@test.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.now %>
+
+customer2:
+  name: customer2
+  email: customer2@test.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.now %>
+
 <% 30.times do |n| %>
 user_<%= n %>:
   name:  <%= "User #{n}" %>
