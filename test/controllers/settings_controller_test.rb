@@ -6,7 +6,7 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     @admin_user  = users(:admin_user)
     @customer_representative = users(:customer_representative)
     add_roles_to_users
-    @setting = settings(:one)
+    @setting = settings(:application_name)
   end
 
   test 'should not be able to access settings index unless logged in' do

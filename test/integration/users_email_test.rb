@@ -3,7 +3,7 @@ require 'test_helper'
 class UsersEmailTest < ActionDispatch::IntegrationTest
 
   def setup
-    @email_setting = settings(:four)
+    @email_setting = settings(:default_email)
     @email_setting.update_attributes(value: 'test@test.com')
     @email_setting.reload
   end

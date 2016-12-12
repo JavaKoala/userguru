@@ -5,7 +5,7 @@ class SettingsHelperTest < ActionView::TestCase
   include SettingsHelper
 
   def setup
-    @setting = settings(:one)
+    @setting = settings(:application_name)
   end
 
   test 'setting_value should return input string if the setting name is not valid' do
