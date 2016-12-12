@@ -7,6 +7,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @customer1  = users(:customer1)
     @customer2  = users(:customer2)
     add_roles_to_users
+    add_user_issue
   end
 
   test "should get new" do

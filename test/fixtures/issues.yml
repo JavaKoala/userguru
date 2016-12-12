@@ -10,3 +10,13 @@ two:
   description: "wow, a second issue?"
   user: two
   status: 1
+
+customer1_issue:
+  title: "Customer1 has an issue"
+  description: "It's really important!"
+  user: customer1
+
+customer2_issue:
+  title: "Customer2 has an issue"
+  description: "But I have an issue too!!!"
+  user: customer2

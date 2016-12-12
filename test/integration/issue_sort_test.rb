@@ -11,6 +11,7 @@ class IssueSortTest < ActionDispatch::IntegrationTest
     @issue.user_issue = UserIssue.new
     @other_issue = issues(:two)
     @other_issue.user_issue = UserIssue.new
+    add_user_issue
   end
 
   test 'issue table sort should include all search params for a representative' do
