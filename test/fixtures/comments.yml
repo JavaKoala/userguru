@@ -9,3 +9,8 @@ two:
   text: MyText
   issue_id: 1
   user_id: 1
+
+customer1_comment:
+  text: "Y U No fix?"
+  issue_id: customer1_issue
+  user_id:  customer1
