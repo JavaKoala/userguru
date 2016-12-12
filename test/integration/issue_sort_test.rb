@@ -8,9 +8,7 @@ class IssueSortTest < ActionDispatch::IntegrationTest
     @other_user = users(:two)
     @other_user.roles << Role.where(name: 'customer')
     @issue = issues(:one)
-    @issue.user_issue = UserIssue.new
     @other_issue = issues(:two)
-    @other_issue.user_issue = UserIssue.new
     add_user_issue
   end
 
