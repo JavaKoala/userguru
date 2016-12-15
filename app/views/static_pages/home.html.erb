@@ -13,5 +13,9 @@
     <h2><%= setting_value('tagline_2') %></h2>
   
     <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+
+    <h4><br>Already a user?</h4>
+    <%= link_to "Login", login_path, class: "btn btn-lg btn-success" %>
+
   </div>
 <% end %>
