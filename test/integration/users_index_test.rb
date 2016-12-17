@@ -3,17 +3,21 @@ require 'test_helper'
 class UsersIndexTest < ActionDispatch::IntegrationTest
   
   def setup
-    @user = users(:one)
-    @user.roles << Role.where(name: 'customer')
-    @other_user = users(:two)
-    @other_user.roles << Role.where(name: 'customer')
+    @customer1           = users(:customer1)
+    @customer2           = users(:customer2)
+    @representative_user = users(:representative)
+    @admin_user          = users(:admin_user)
+    add_roles_to_users
   end
   
   test "index as admin including pagination, edit and delete links" do
-    log_in_as(@user)
+    log_in_as(@customer1)
     get users_path
     assert_redirected_to login_url
-    @user.roles << Role.where(name: 'admin')
+    delete logout_path
+    follow_redirect!
+    assert_not is_logged_in?
+    log_in_as(@admin_user)
     get users_path
     assert_select 'div.pagination'
     first_page_of_users = User.paginate(page: 1)
@@ -23,17 +27,18 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
       assert_select 'a[href=?]', user_path(user), text: 'Delete', method: :delete
     end
     assert_difference 'User.count', -1 do
-      delete user_path(@other_user)
+      delete user_path(@customer2)
     end
   end
   
   test "index including pagination" do
-    log_in_as(@user)
+    log_in_as(@representative_user)
     get users_path
     assert_redirected_to login_url
-    @user.roles << Role.where(name: 'representative')
-    assert_redirected_to login_url
-    @user.roles << Role.where(name: 'admin')
+    delete logout_path
+    follow_redirect!
+    assert_not is_logged_in?
+    log_in_as(@admin_user)
     get users_path
     assert_response :success
     User.paginate(page: 1).each do |user|
