@@ -3,17 +3,19 @@ require 'test_helper'
 class IssueSortTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:one)
-    @user.roles << Role.where(name: 'representative')
-    @other_user = users(:two)
-    @other_user.roles << Role.where(name: 'customer')
+
+    # Set up users
+    @representative_user = users(:representative)
+    @customer1           = users(:customer1)
+    add_roles_to_users
+
+    # Set up issues
     @issue = issues(:one)
-    @other_issue = issues(:two)
     add_user_issue
   end
 
   test 'issue table sort should include all search params for a representative' do
-    log_in_as(@user)
+    log_in_as(@representative_user)
     get issues_path
     assert_select "a[href=?]", "/issues?direction=asc&sort=id", count: 1
     get issues_path, params: { search: 'LOL',
@@ -26,7 +28,7 @@ class IssueSortTest < ActionDispatch::IntegrationTest
   end
 
   test 'issue table sort should include all search params for a customer' do
-    log_in_as(@other_user)
+    log_in_as(@customer1)
     get issues_path
     assert_select "a[href=?]", "/issues?direction=desc&sort=title", count: 1
     get issues_path, params: { search: 'LOL',
