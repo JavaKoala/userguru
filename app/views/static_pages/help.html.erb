@@ -1,3 +1,47 @@
 <h1>Help</h1>
 <p>If you need help, log in and create an issue :)</p>
 <p>If you need help logging in please email the team at bpmeyer0@gmail.com. Thanks!</p>
+
+<div id="helpCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#helpCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#helpCarousel" data-slide-to="1"></li>
+    <li data-target="#helpCarousel" data-slide-to="2"></li>
+    <li data-target="#helpCarousel" data-slide-to="3"></li>
+    <li data-target="#helpCarousel" data-slide-to="4"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <%= image_tag "log_in.jpeg" %>
+    </div>
+
+    <div class="item">
+      <%= image_tag "new_issue.jpeg" %>
+    </div>
+
+    <div class="item">
+      <%= image_tag "user_screen.jpeg" %>
+    </div>
+
+    <div class="item">
+      <%= image_tag "issue_screen.jpeg" %>
+    </div>
+
+    <div class="item">
+      <%= image_tag "comment_screen.jpeg" %>
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#helpCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#helpCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
