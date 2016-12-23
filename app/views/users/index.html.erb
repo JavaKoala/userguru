@@ -3,14 +3,20 @@
 <div style="overflow-x:auto;" align="center">
   <table class="table">
     <tr>
-      <th>Name</th>
+      <th><%= user_sortable "id" %></th>
+      <th><%= user_sortable "name" %></th>
+      <th><%= user_sortable "updated_at" %></th>
+      <th><%= user_sortable "created_at" %></th>
       <th>Edit</th>
       <th>Delete</th>
     </tr>
   <%= will_paginate %>
   <% @users.each do |user| %>
     <tr>
+      <td><%= user.id%></td>
       <td><%= link_to user.name, user %></td>
+      <td><%= time_ago_in_words(user.updated_at) %></td>
+      <td><%= time_ago_in_words(user.created_at) %></td>
       <td><%= link_to "Edit",  edit_user_path(user) %></td>
       <td><%= link_to "Delete", user, method: :delete, data: { confirm: "You sure?" } %></td>
     </tr>

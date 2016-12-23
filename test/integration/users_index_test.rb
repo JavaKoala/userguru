@@ -20,7 +20,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get users_path
     assert_select 'div.pagination'
-    first_page_of_users = User.paginate(page: 1)
+    first_page_of_users = User.order("name").paginate(page: 1)
     first_page_of_users.each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.name
       assert_select 'a[href=?]', edit_user_path(user), text: 'Edit'
@@ -41,7 +41,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     log_in_as(@admin_user)
     get users_path
     assert_response :success
-    User.paginate(page: 1).each do |user|
+    User.order("name").paginate(page: 1).each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.name
     end
   end
