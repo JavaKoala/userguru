@@ -11,7 +11,7 @@ class IssuesController < ApplicationController
     else
       issue_search = { search_params: issue_search_params, user_id: current_user.id }
     end
-    @issues = Issue.search(issue_search).order(sort_column + " " + sort_direction)
+    @issues = Issue.search(issue_search).order(sort_column(Issue.column_names, "title") + " " + sort_direction)
                                         .paginate(page: params[:page])
   end
 

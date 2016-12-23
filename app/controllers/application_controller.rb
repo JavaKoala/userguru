@@ -29,9 +29,9 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # Give a column to sort on, default title
-    def sort_column
-      Issue.column_names.include?(params[:sort]) ? params[:sort] : "title"
+    # Give a column to sort on
+    def sort_column(columns, default)
+      columns.include?(params[:sort]) ? params[:sort] : default
     end
 
     # Direction to sort on, default asc

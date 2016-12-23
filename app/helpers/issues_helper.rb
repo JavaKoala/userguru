@@ -45,7 +45,7 @@ module IssuesHelper
   # returns issue search and sort. Includes the issue search params
   def issue_sortable(column, title = nil)
     title ||= column.titleize
-    direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
+    direction = column == sort_column(Issue.column_names, "title") && sort_direction == "asc" ? "desc" : "asc"
     link_to title, { sort: column, direction: direction,
                                    search: params[:search],
                                    status: params[:status],

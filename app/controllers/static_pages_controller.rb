@@ -4,11 +4,11 @@ class StaticPagesController < ApplicationController
       if internal_user?
         @issues = Issue.joins(:user_issue).where(user_issues: { user_id: current_user.id })
                                           .where.not(status: 'closed')
-                                          .order(sort_column + " " + sort_direction)
+                                          .order(sort_column(Issue.column_names, "title") + " " + sort_direction)
                                           .paginate(page: params[:page])
       else
         @issues = current_user.issues.where.not(status: 'closed')
-                                     .order(sort_column + " " + sort_direction)
+                                     .order(sort_column(Issue.column_names, "title") + " " + sort_direction)
                                      .paginate(page: params[:page])
       end
       # need to assign @static_pages for will_paginate

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @issues = @user.issues.where.not(status: 'closed')
-                          .order(sort_column + " " + sort_direction)
+                          .order(sort_column(Issue.column_names, "title") + " " + sort_direction)
                           .paginate(page: params[:page])
     # need to assign @users variable for will_paginate
     @users = User.none().paginate(page: params[:page])
