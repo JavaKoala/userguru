@@ -11,6 +11,8 @@ module SettingsHelper
       "Location for all your user needs"
     when "default_email"
       "no-reply@user.guru"
+    when "help_email"
+      ""
     else
       setting_name
     end

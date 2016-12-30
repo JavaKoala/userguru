@@ -19,3 +19,8 @@ default_email:
   id: 4
   name: default_email
   value: ""
+
+help_email:
+  id: 5
+  name: help_email
+  value: ""
