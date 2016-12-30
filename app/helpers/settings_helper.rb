@@ -26,11 +26,7 @@ module SettingsHelper
   def setting_value(setting_name)
     if Setting.exists?(name: setting_name)
       setting = Setting.find_by(name: setting_name)
-      if setting.value.empty?
-        default_setting_value(setting_name)
-      else
-        setting.value
-      end
+      setting.value.empty? ? default_setting_value(setting_name) : setting.value
     else
       default_setting_value(setting_name)
     end
