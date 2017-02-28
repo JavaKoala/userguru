@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get 'issue/:title', :to => 'issue#show'
+    end
+  end
+
   get 'password_resets/new'
 
   get 'password_resets/edit'

@@ -21,6 +21,10 @@ gem 'coffee-rails', '~> 4.2'
 gem 'will_paginate', '~> 3.1'
 # Use boot-strap will paginate for pagination styling
 gem 'bootstrap-will_paginate', '~> 0.0.10'
+# Serializer for JSON
+gem 'active_model_serializers', '~> 0.10.4'
+# Add Responders
+gem 'responders', '~> 2.3'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
