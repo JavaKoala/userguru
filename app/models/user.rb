@@ -7,6 +7,7 @@ class User < ApplicationRecord
   
   # before create
   before_create :create_activation_digest
+  before_create { self.auth_token = User.new_token }
   
   # Model relations
   has_many :user_roles, dependent: :destroy
@@ -23,7 +24,8 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, length: { minimum: 6 }, allow_blank: true
-  
+  validates :auth_token, uniqueness: true
+
   # Returns the has digest of the given string
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -95,4 +97,5 @@ class User < ApplicationRecord
       self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)
     end
+
 end
