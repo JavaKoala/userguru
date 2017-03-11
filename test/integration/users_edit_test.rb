@@ -28,6 +28,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_response :success
     name = "Foo Bar"
     email = "foo@bar.com"
+    auth_token = @customer1.auth_token
     patch user_path(@customer1), params: { user: { name: name,
                                                    email: email,
                                                    password: "",
@@ -37,6 +38,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @customer1.reload
     assert_equal @customer1.name, name
     assert_equal @customer1.email, email
+    assert_not_equal @customer1.auth_token, auth_token
   end
   
   test "successful admin edit" do
@@ -69,6 +71,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_response :success
     name  = "Foo Bar"
     email = "foo@bar.com"
+    auth_token = @customer1.auth_token
     patch user_path(@customer1), params: { user: { name: name,
                                                    email: email,
                                                    password: "foobar",
@@ -78,5 +81,6 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @customer1.reload
     assert_equal @customer1.name, name
     assert_equal @customer1.email, email
+    assert_not_equal @customer1.auth_token, auth_token
   end
 end
