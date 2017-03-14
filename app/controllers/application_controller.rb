@@ -29,6 +29,14 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # Confirms an api user
+    def current_api_user
+      unless current_api_user?
+        render json: { errors: "Not authenticated" },
+               status: :unauthorized
+      end
+    end
+
     # Give a column to sort on
     def sort_column(columns, default)
       columns.include?(params[:sort]) ? params[:sort] : default

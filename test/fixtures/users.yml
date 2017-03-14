@@ -4,6 +4,7 @@ one:
   name: Ben Example
   email: ben@example.com
   password_digest: <%= User.digest('password') %>
+  auth_token: <%= User.new_token %>
   activated: true
   activated_at: <%= Time.now %>
 

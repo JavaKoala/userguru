@@ -26,7 +26,15 @@ module SessionsHelper
       end
     end
   end
-  
+
+  def api_user
+    @api_user ||= User.find_by(auth_token: request.headers['Authorization'])
+  end
+
+  def current_api_user?
+    !api_user.nil?
+  end
+
   def logged_in?
     !current_user.nil?
   end

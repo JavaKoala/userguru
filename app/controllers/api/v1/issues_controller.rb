@@ -1,4 +1,4 @@
-class Api::V1::IssueController < ApplicationController
+class Api::V1::IssuesController < ApplicationController
   respond_to :json
   def show
     title = params[:title]
