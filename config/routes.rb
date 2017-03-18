@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      get 'issues/:title', :to => 'issues#show'
+      resources :issues, only: :index
       resources :sessions, only: [:create, :destroy]
     end
   end
