@@ -1,4 +1,5 @@
 class Api::V1::IssuesController < ApplicationController
+  before_action :current_api_user, only: :index
   respond_to :json
 
   def index
