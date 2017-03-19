@@ -27,12 +27,24 @@ module SessionsHelper
     end
   end
 
+  # Uses the authorization in the api header to determine if the token exists for a user
   def api_user
     @api_user ||= User.find_by(auth_token: request.headers['authorization'])
   end
 
   def current_api_user?
     !api_user.nil?
+  end
+
+  # Returns true if the api user is internal, false if not
+  def internal_api_user?
+    current_api_user? && (api_user.roles.exists?(name: 'representative') ||
+                          api_user.roles.exists?(name: 'admin'))
+  end
+
+  # Returns true if the api user is admin, false if not
+  def admin_api_user?
+    current_api_user? && api_user.roles.exists?(name: 'admin')
   end
 
   def logged_in?
