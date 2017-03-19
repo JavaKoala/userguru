@@ -14,13 +14,13 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not get index with wrong authorization header' do
     get api_v1_issues_path, params: { title: '' },
-                            headers: { 'Authorization' => 'SUCKIT' }
+                            headers: { 'authorization' => 'SUCKIT' }
     assert_response :unauthorized
   end
 
   test 'should get index' do
     get api_v1_issues_path, params: { title: '' }, 
-                            headers: { 'Authorization' => @customer1.auth_token }
+                            headers: { 'authorization' => @customer1.auth_token }
     assert_response :success
   end
 
@@ -31,13 +31,13 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     @customer1.reload
     customer1_auth_token = body['auth_token']
     get api_v1_issues_path, params: { title: '' }, 
-                            headers: { 'Authorization' => customer1_auth_token }
+                            headers: { 'authorization' => customer1_auth_token }
     assert_response :success
   end
 
   test 'should get issues with Customer in the title' do
     get api_v1_issues_path, params: { title: Issue.first.title }, 
-                            headers: { 'Authorization' => @customer1.auth_token }
+                            headers: { 'authorization' => @customer1.auth_token }
     assert_response :success
     body = JSON.parse(response.body)
     assert_equal Issue.first.title, body['title']
