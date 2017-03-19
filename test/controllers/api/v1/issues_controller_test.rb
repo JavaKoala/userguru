@@ -25,7 +25,7 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get index with authorization token creation' do
-    post api_v1_sessions_path, params: { session: { email: @customer1.email, password: 'password' } }
+    get api_v1_sessions_path, params: { email: @customer1.email, password: 'password' }
     assert_response :success
     body = JSON.parse(response.body)
     @customer1.reload

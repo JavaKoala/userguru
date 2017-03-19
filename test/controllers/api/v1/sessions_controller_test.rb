@@ -8,7 +8,7 @@ class Api::V1::SessionsControllerTest < ActionController::TestCase
   end
 
   test 'api login with correct credentials' do
-    post :create, params: { session: { email: @customer1.email, password: 'password' } }
+    get :index, params: { email: @customer1.email, password: 'password' }
     assert_response :success
     body = JSON.parse(response.body)
     @customer1.reload
@@ -16,14 +16,14 @@ class Api::V1::SessionsControllerTest < ActionController::TestCase
   end
 
   test 'api login with incorrect password' do
-    post :create, params: { session: { email: @customer1.email, password: 'LOL' } }
+    get :index, params: { email: @customer1.email, password: 'LOL' }
     assert_response :unauthorized
     body = JSON.parse(response.body)
     assert_equal 'Invalid email or password', body['errors']
   end
 
   test 'api login with incorrect email' do
-    post :create, params: { session: { email: 'LOL', password: 'password' } }
+    get :index, params: { email: 'LOL', password: 'password' }
     assert_response :unauthorized
     body = JSON.parse(response.body)
     assert_equal 'Invalid email or password', body['errors']
@@ -32,7 +32,7 @@ class Api::V1::SessionsControllerTest < ActionController::TestCase
   test 'api login with no roles' do
     # remove role from customer1
     @customer1.roles.delete(Role.where(name: 'customer'))
-    post :create, params: { session: { email: @customer1.email, password: 'password' } }
+    get :index, params: { email: @customer1.email, password: 'password' }
     assert_response :unauthorized
     body = JSON.parse(response.body)
     assert_equal 'Invalid email or password', body['errors']
