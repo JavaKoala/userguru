@@ -1,5 +1,6 @@
 class Api::V1::IssuesController < ApplicationController
   before_action :current_api_user, only: [:index, :show]
+  before_action :internal_or_issue_creator, only: :show
   respond_to :json
 
   def index
@@ -21,6 +22,14 @@ class Api::V1::IssuesController < ApplicationController
 
     def issue_search_params
       params.permit(:search, :status)
+    end
+
+    # Invalid or unauthorized issues should return a 401
+    def internal_or_issue_creator
+      @issue = api_user.issues.find_by(id: params[:id])
+      if (@issue.nil? && !internal_api_user?)
+        render json: { errors: "Invalid issue" }, status: 401
+      end
     end
 
 end

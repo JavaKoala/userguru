@@ -51,7 +51,7 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @customer1.issues.first.title, body[0]['title']
   end
 
-  test 'customer1 should not be able to see customer2 issue' do
+  test 'customer1 should not be able to see customer2 issues' do
     get api_v1_issues_path, params: { search: @customer2.issues.first.title }, 
                             headers: { 'authorization' => @customer1.auth_token }
     assert_response :success
@@ -59,7 +59,7 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_empty body
   end
 
-  test 'representative_user should be able to see customer2 issue' do
+  test 'representative_user should be able to see customer2 issues' do
     get api_v1_issues_path, params: { search: @customer2.issues.first.description }, 
                             headers: { 'authorization' => @representative_user.auth_token }
     assert_response :success
@@ -72,5 +72,17 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     body = JSON.parse(response.body)
     assert_equal @customer1_issue.description, body['description']
+  end
+
+  test 'customer1 should not be able to see customer2 issue' do
+    get api_v1_issue_path(@customer2_issue.id), headers: { 'authorization' => @customer1.auth_token }
+    assert_response :unauthorized
+  end
+
+  test 'representative_user should be able to see customer2 issue' do
+    get api_v1_issue_path(@customer2_issue.id), headers: { 'authorization' => @representative_user.auth_token }
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal @customer2_issue.title, body['title']
   end
 end
