@@ -3,8 +3,19 @@ class Api::V1::IssuesController < ApplicationController
   respond_to :json
 
   def index
-    issue_search = params[:title]
-    @issues = Issue.find_by(title: issue_search)
+    if internal_api_user?
+      issue_search = { search_params: issue_search_params }
+    else
+      issue_search = { search_params: issue_search_params, user_id: api_user.id }
+    end
+    @issues = Issue.search(issue_search)
     render :json => @issues
   end
+
+  private
+
+    def issue_search_params
+      params.permit(:search, :status)
+    end
+
 end
