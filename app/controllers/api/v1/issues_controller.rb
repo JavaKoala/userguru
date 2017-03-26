@@ -1,5 +1,5 @@
 class Api::V1::IssuesController < ApplicationController
-  before_action :current_api_user, only: :index
+  before_action :current_api_user, only: [:index, :show]
   respond_to :json
 
   def index
@@ -10,6 +10,11 @@ class Api::V1::IssuesController < ApplicationController
     end
     @issues = Issue.search(issue_search)
     render :json => @issues
+  end
+
+  def show
+    @issue = Issue.find(params[:id])
+    render :json => @issue
   end
 
   private

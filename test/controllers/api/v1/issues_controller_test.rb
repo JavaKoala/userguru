@@ -66,4 +66,11 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
     assert_equal @customer2.issues.first.title, body[0]['title']
   end
+
+  test 'should get show for customer1 issue' do
+    get api_v1_issue_path(@customer1_issue.id), headers: { 'authorization' => @customer1.auth_token }
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal @customer1_issue.description, body['description']
+  end
 end
