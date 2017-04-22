@@ -14,3 +14,8 @@ customer1_comment:
   text: "Y U No fix?"
   issue_id: customer1_issue
   user_id:  customer1
+
+customer1_comment2:
+  text: "I can haz fix"
+  issue_id: customer1_issue
+  user_id:  customer1

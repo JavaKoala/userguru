@@ -13,6 +13,19 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     @customer1_issue = issues(:customer1_issue)
     @customer2_issue = issues(:customer2_issue)
     add_user_issue
+
+    # Set up comments 
+    @customer1_comment = comments(:customer1_comment)
+    @customer1_comment.issue_id = @customer1_issue.id
+    @customer1_comment.user_id = @customer1.id
+    @customer1_comment.save
+    @customer1_comment.reload
+
+    @customer1_comment2 = comments(:customer1_comment2)
+    @customer1_comment2.issue_id = @customer1_issue.id
+    @customer1_comment2.user_id = @customer1.id
+    @customer1_comment2.save
+    @customer1_comment2.reload
   end
 
   test 'should not get index without authorization header' do
@@ -67,11 +80,13 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @customer2.issues.first.title, body[0]['title']
   end
 
-  test 'should get show for customer1 issue' do
+  test 'should get show for customer1 issue, should include comments' do
     get api_v1_issue_path(@customer1_issue.id), headers: { 'authorization' => @customer1.auth_token }
     assert_response :success
     body = JSON.parse(response.body)
     assert_equal @customer1_issue.description, body['description']
+    assert_equal @customer1_comment.text, body['comments'].last['text']
+    assert_equal @customer1_comment2.text, body['comments'].first['text']
   end
 
   test 'customer1 should not be able to see customer2 issue' do
