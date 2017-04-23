@@ -3,4 +3,5 @@ class IssueSerializer < ActiveModel::Serializer
 
   # Model Relations
   has_many :comments
+  belongs_to :user
 end

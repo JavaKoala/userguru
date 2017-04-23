@@ -61,6 +61,8 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
                             headers: { 'authorization' => @customer1.auth_token }
     assert_response :success
     body = JSON.parse(response.body)
+    assert_equal @customer1.name, body[0]['user']['name']
+    assert_equal @customer1.email, body[0]['user']['email']
     assert_equal @customer1.issues.first.title, body[0]['title']
   end
 
@@ -77,6 +79,8 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
                             headers: { 'authorization' => @representative_user.auth_token }
     assert_response :success
     body = JSON.parse(response.body)
+    assert_equal @customer2.name, body[0]['user']['name']
+    assert_equal @customer2.email, body[0]['user']['email']
     assert_equal @customer2.issues.first.title, body[0]['title']
   end
 
@@ -86,7 +90,11 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
     assert_equal @customer1_issue.description, body['description']
     assert_equal @customer1_comment.text, body['comments'].last['text']
+    assert_equal @customer1.name, body['comments'].last['commenter_name']
+    assert_equal @customer1.email, body['comments'].last['commenter_email']
     assert_equal @customer1_comment2.text, body['comments'].first['text']
+    assert_equal @customer1.name, body['comments'].first['commenter_name']
+    assert_equal @customer1.email, body['comments'].first['commenter_email']
   end
 
   test 'customer1 should not be able to see customer2 issue' do

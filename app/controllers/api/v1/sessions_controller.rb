@@ -6,7 +6,7 @@ class Api::V1::SessionsController < ApplicationController
     if user && user.authenticate(params[:password]) && user.roles.exists?
       user.auth_token = User.new_token
       user.save!
-      render json: user, :only => [:auth_token]
+      render json: user, serializer: UserAuthTokenSerializer
     else
       render json: { errors: "Invalid email or password" }, status: 401
     end
