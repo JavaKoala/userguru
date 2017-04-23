@@ -10,7 +10,7 @@ class Api::V1::IssuesController < ApplicationController
       issue_search = { search_params: issue_search_params, user_id: api_user.id }
     end
     @issues = Issue.search(issue_search)
-    render :json => @issues
+    render :json => @issues, each_serializer: IssueSearchSerializer
   end
 
   def show
