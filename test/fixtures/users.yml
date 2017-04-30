@@ -4,7 +4,7 @@ one:
   name: Ben Example
   email: ben@example.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -12,7 +12,7 @@ two:
   name: Bob Example
   email: bob@example.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -20,7 +20,7 @@ admin_user:
   name: admin_user
   email: admin_user@test.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -28,7 +28,7 @@ representative:
   name: representative
   email: representative@test.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -36,7 +36,7 @@ customer_representative:
   name: customer_representative
   email: customer_representative@test.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -44,7 +44,7 @@ customer1:
   name: customer1
   email: customer1@test.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -52,7 +52,7 @@ customer2:
   name: customer2
   email: customer2@test.com
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
   activated: true
   activated_at: <%= Time.now %>
 
@@ -61,5 +61,5 @@ user_<%= n %>:
   name:  <%= "User #{n}" %>
   email: <%= "user-#{n}@example.com" %>
   password_digest: <%= User.digest('password') %>
-  auth_token: <%= User.new_token %>
+  auth_token: <%= User.new_auth_token %>
 <% end %>

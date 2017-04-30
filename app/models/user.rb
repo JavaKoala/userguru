@@ -7,7 +7,7 @@ class User < ApplicationRecord
   
   # before create
   before_create :create_activation_digest
-  before_create { self.auth_token = User.new_token }
+  before_create { self.auth_token = User.new_auth_token }
   
   # Model relations
   has_many :user_roles, dependent: :destroy
@@ -36,6 +36,11 @@ class User < ApplicationRecord
   # Returns a random token.
   def User.new_token
     SecureRandom.urlsafe_base64
+  end
+
+  # Returns a random auth token
+  def User.new_auth_token
+    SecureRandom.urlsafe_base64(64)
   end
 
   # Remembers a user in the database for use in persistent sessions

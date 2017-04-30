@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new(user_params)
-    @user.auth_token = User.new_token
+    @user.auth_token = User.new_auth_token
     if @user.save
       @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    @user.auth_token = User.new_token
+    @user.auth_token = User.new_auth_token
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
       redirect_to @user

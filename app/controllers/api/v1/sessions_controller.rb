@@ -4,7 +4,7 @@ class Api::V1::SessionsController < ApplicationController
   def index
     user = User.find_by(email: params[:email].downcase)
     if user && user.authenticate(params[:password]) && user.roles.exists?
-      user.auth_token = User.new_token
+      user.auth_token = User.new_auth_token
       user.save!
       render json: user, serializer: UserAuthTokenSerializer
     else

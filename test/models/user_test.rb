@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
                      email: "example@test.com",
                      password: "foobar",
                      password_confirmation: "foobar",
-                     auth_token: User.new_token)
+                     auth_token: User.new_auth_token)
   end
   
   test "user should be valid" do
@@ -63,5 +63,10 @@ class UserTest < ActiveSupport::TestCase
   
   test "authenticated? should return false for a user with a nil digest" do
     assert_not @user.authenticated?(:remember, '')
+  end
+
+  test "User.new_auth_token should be longer than 64 characters" do
+    new_token = User.new_auth_token
+    assert new_token.length > 64
   end
 end
