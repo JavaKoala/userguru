@@ -1,5 +1,6 @@
 class Api::V1::IssuesController < ApplicationController
-  before_action :current_api_user, only: [:index, :show]
+  skip_before_action :verify_authenticity_token
+  before_action :current_api_user, only: [:index, :show, :create]
   before_action :internal_or_issue_creator, only: :show
   respond_to :json
 
@@ -18,7 +19,22 @@ class Api::V1::IssuesController < ApplicationController
     render :json => @issue
   end
 
+  def create
+    # Merging in the user_id because it is the user_id of the current user creating the issue
+    @issue = Issue.new(issue_params.merge(user_id: api_user.id))
+    @issue.user_issue = UserIssue.new
+    if @issue.save
+      render :json => @issue, status: 201
+    else
+      render json: { errors: "Bad Request" }, status: 400
+    end
+  end
+
   private
+
+    def issue_params
+      params.permit(:title, :description)
+    end
 
     def issue_search_params
       params.permit(:search, :status)

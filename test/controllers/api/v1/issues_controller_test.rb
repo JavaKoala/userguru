@@ -108,4 +108,39 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
     assert_equal @customer2_issue.title, body['title']
   end
+
+  test 'should create issue' do
+    assert_difference 'UserIssue.count', 1 do
+      post api_v1_issues_path, params: { title: "test title", description: "test description" },
+                               headers: { 'authorization' => @representative_user.auth_token }
+      assert_response 201
+      body = JSON.parse(response.body)
+      assert_equal body["title"], "test title"
+      assert_equal body["description"], "test description"
+    end
+  end
+
+  test 'should not create issue if there is no title' do
+    assert_no_difference 'UserIssue.count', 1 do
+      post api_v1_issues_path, params: { title: "", description: "test description" },
+                               headers: { 'authorization' => @representative_user.auth_token }
+      assert_response 400
+    end
+  end
+
+  test 'should not create issue if there is no description' do
+    assert_no_difference 'UserIssue.count', 1 do
+      post api_v1_issues_path, params: { title: "test title", description: "" },
+                               headers: { 'authorization' => @representative_user.auth_token }
+      assert_response 400
+    end
+  end
+
+  test 'should not create issue if the authorization is wrong' do
+    assert_no_difference 'UserIssue.count', 1 do
+      post api_v1_issues_path, params: { title: "test title", description: "test description" },
+                               headers: { 'authorization' => "LOLWUT" }
+      assert_response :unauthorized
+    end
+  end
 end
