@@ -1,7 +1,7 @@
 class Api::V1::IssuesController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :current_api_user, only: [:index, :show, :create]
-  before_action :internal_or_issue_creator, only: :show
+  before_action :current_api_user, only: [:index, :show, :create, :update]
+  before_action :internal_or_issue_creator, only: [:show, :update]
   respond_to :json
 
   def index
@@ -30,6 +30,15 @@ class Api::V1::IssuesController < ApplicationController
     end
   end
 
+  def update
+    @issue = Issue.find(params[:id])
+    if @issue.update_attributes(issue_params)
+      render :json => @issue
+    else
+      render json: { errors: "Bad Request" }, status: 400
+    end
+  end
+
   private
 
     def issue_params
@@ -40,11 +49,16 @@ class Api::V1::IssuesController < ApplicationController
       params.permit(:search, :status)
     end
 
-    # Invalid or unauthorized issues should return a 401
+    # Non-existant issues return a 404 
+    # Unauthorized issues should return a 401
     def internal_or_issue_creator
-      @issue = api_user.issues.find_by(id: params[:id])
-      if (@issue.nil? && !internal_api_user?)
-        render json: { errors: "Invalid issue" }, status: 401
+      if Issue.find_by(id: params[:id]).nil?
+        render json: { errors: "Not Found" }, status: 404
+      else
+        @issue = api_user.issues.find_by(id: params[:id])
+        if (@issue.nil? && !internal_api_user?)
+          render json: { errors: "Invalid issue" }, status: 401
+        end
       end
     end
 

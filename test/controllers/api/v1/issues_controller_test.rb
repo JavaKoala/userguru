@@ -109,6 +109,11 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @customer2_issue.title, body['title']
   end
 
+  test 'should receive a 404 for an issue that doesnt exist' do
+    get api_v1_issue_path(@customer2_issue.id + 1), headers: { 'authorization' => @representative_user.auth_token }
+    assert_response 404
+  end
+
   test 'should create issue' do
     assert_difference 'UserIssue.count', 1 do
       post api_v1_issues_path, params: { title: "test title", description: "test description" },
@@ -142,5 +147,47 @@ class Api::V1::IssuesControllerTest < ActionDispatch::IntegrationTest
                                headers: { 'authorization' => "LOLWUT" }
       assert_response :unauthorized
     end
+  end
+
+  test 'should update issue' do
+    patch api_v1_issue_path(@customer1_issue.id), params: { title: "updated title", description: "new description" },
+                                                  headers: { 'authorization' => @customer1.auth_token }
+    assert_response :success
+    @customer1_issue.reload
+    assert_equal @customer1_issue.title, "updated title"
+    assert_equal @customer1_issue.description, "new description"
+  end
+
+  test 'should not be able to update issue with wrong authorization' do
+    patch api_v1_issue_path(@customer1_issue.id), params: { title: "updated title", description: "new description" },
+                                                  headers: { 'authorization' => "ICANHASTOKEN" }
+    assert_response :unauthorized
+  end
+
+  test 'should not be able to update issue with wrong id' do
+    patch api_v1_issue_path(@customer1_issue.id + 1), params: { title: "updated title", description: "new description" },
+                                                      headers: { 'authorization' => @representative_user.auth_token }
+    assert_response 404
+  end
+
+  test 'customer1 should not be able to update customer2s issue' do
+    patch api_v1_issue_path(@customer2_issue), params: { title: "updated title", description: "new description" },
+                                               headers: { 'authorization' => @customer1.auth_token }
+    assert_response :unauthorized
+  end
+
+  test 'representative_user should be able to update customer2s issue' do
+    patch api_v1_issue_path(@customer2_issue), params: { title: "updated title", description: "new description" },
+                                               headers: { 'authorization' => @representative_user.auth_token }
+    assert_response :success
+    @customer2_issue.reload
+    assert_equal @customer2_issue.title, "updated title"
+    assert_equal @customer2_issue.description, "new description"
+  end
+
+  test 'should not be able to update issue with invalid params' do
+    patch api_v1_issue_path(@customer1_issue.id), params: { title: "", description: "" },
+                                                  headers: { 'authorization' => @customer1.auth_token }
+    assert_response 400
   end
 end
