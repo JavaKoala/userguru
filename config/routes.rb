@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :issues, only: [:index, :show, :create, :update]
+      resources :comments, only: :create
       resources :sessions, only: :index
     end
   end
