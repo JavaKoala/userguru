@@ -1,6 +1,6 @@
 class Api::V1::CommentsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :current_api_user, only: :create
+  before_action :current_api_user, only: [:create, :update]
   before_action :internal_or_issue_creator, only: :create
   respond_to :json
 
@@ -12,6 +12,27 @@ class Api::V1::CommentsController < ApplicationController
       render :json => @issue, status: 201
     else
       render json: { errors: "Bad Request" }, status: 400
+    end
+  end
+
+  # If the comment is not found return a 404
+  # If the update is not by the issue creator return a 401
+  # If the request is bad (blank text) return a 400
+  # The comment serializer returns the main issue
+  def update
+    if Comment.find_by(id: params[:id]).nil?
+      render json: { errors: "Not Found" }, status: 404
+    else
+      @comment = Comment.find(params[:id])
+      if api_user.id != @comment.user_id
+        render json: { errors: "Unauthorized" }, status: 401
+      else
+        if @comment.update_attributes(text: params[:text])
+          render :json => @comment
+        else
+          render json: { errors: "Bad Request" }, status: 400
+        end
+      end
     end
   end
 
