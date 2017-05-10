@@ -13,6 +13,7 @@ class Api::V1::SessionsControllerTest < ActionController::TestCase
     body = JSON.parse(response.body)
     @customer1.reload
     assert_equal @customer1.auth_token, body['auth_token']
+    assert_equal body.length, 1
   end
 
   test 'api login with incorrect password' do
