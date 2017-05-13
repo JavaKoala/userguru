@@ -117,4 +117,95 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, ActionMailer::Base.deliveries.size
   end
 
+  test 'should update user name, email and password' do
+    original_password = @customer2.password_digest
+    # first get the users id
+    get api_v1_users_path, params: { email: @customer2.email },
+                           headers: { 'authorization' => @customer2.auth_token }
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal body["id"], @customer2.id
+    user_id = body["id"]
+    patch api_v1_user_path(user_id), params: { name: "updated name",
+                                               email: "updated_email@testupdate.biz",
+                                               password: "UpdatedPassword!" },
+                                               headers: { 'authorization' => @customer2.auth_token }
+    assert_response :success
+    @customer2.reload
+    body = JSON.parse(response.body)
+    assert_equal body["id"], @customer2.id
+    assert_equal body["name"], "updated name"
+    assert_equal body["email"], "updated_email@testupdate.biz"
+    assert_not_equal original_password, @customer2.password_digest
+    assert_not_equal @customer2.password_digest, "UpdatedPassword!"
+  end
+
+  test 'should not update user with invalid auth_token' do
+    patch api_v1_user_path(@customer2.id), params: { name: "updated name",
+                                                     email: "updated_email@testupdate.biz",
+                                                     password: "UpdatedPassword!" },
+                                                     headers: { 'authorization' => "invalid_token" }
+    assert_response :unauthorized
+  end
+
+  test 'should not update user with invalid user id' do
+    patch api_v1_user_path(@customer2.id + 1), params: { name: "updated name",
+                                                         email: "updated_email@testupdate.biz",
+                                                         password: "UpdatedPassword!" },
+                                                         headers: { 'authorization' => @customer2.auth_token }
+    assert_response 400
+  end
+
+  test 'should not be able to modify another users information' do
+    patch api_v1_user_path(@customer2.id), params: { name: "updated name",
+                                                     email: "updated_email@testupdate.biz",
+                                                     password: "UpdatedPassword!" },
+                                                     headers: { 'authorization' => @admin_user.auth_token }
+    assert_response 400
+  end
+
+  test 'should not be able to update a user with an invalid name' do
+    patch api_v1_user_path(@customer2.id), params: { name: "",
+                                                     email: "updated_email@testupdate.biz",
+                                                     password: "UpdatedPassword!" },
+                                                     headers: { 'authorization' => @customer2.auth_token }
+    assert_response 400
+  end
+
+  test 'should not be able to update a user with an invalid email' do
+    patch api_v1_user_path(@customer2.id), params: { name: "updated name",
+                                                     email: "updated_email@testupdate",
+                                                     password: "UpdatedPassword!" },
+                                                     headers: { 'authorization' => @customer2.auth_token }
+    assert_response 400
+  end
+
+  test 'should not be able to update a user with an blank password' do
+    patch api_v1_user_path(@customer2.id), params: { name: "updated name",
+                                                     email: "updated_email@testupdate.biz",
+                                                     password: "" },
+                                                     headers: { 'authorization' => @customer2.auth_token }
+    assert_response 400
+  end
+
+  test 'should not be able to update a user with an invalid password' do
+    patch api_v1_user_path(@customer2.id), params: { name: "updated name",
+                                                     email: "updated_email@testupdate.biz",
+                                                     password: "123" },
+                                                     headers: { 'authorization' => @customer2.auth_token }
+    assert_response 400
+  end
+
+  test 'should be able to only update the password' do
+    user_name     = @customer2.name
+    user_email    = @customer2.email
+    user_password = @customer2.password_digest
+    patch api_v1_user_path(@customer2.id), params: { password: "new_password" },
+                                                     headers: { 'authorization' => @customer2.auth_token }
+    assert_response :success
+    @customer2.reload
+    assert_equal user_name,  @customer2.name
+    assert_equal user_email, @customer2.email
+    assert_not_equal user_password, @customer2.password_digest
+  end
 end

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :issues,   only: [:index, :show, :create, :update]
       resources :comments, only: [:create, :update]
       resources :sessions, only: :index
-      resources :users,    only: [:index, :create]
+      resources :users,    only: [:index, :create, :update]
     end
   end
 
