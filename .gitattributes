@@ -1,6 +1,0 @@
-config/database.yml               export-ignore
-config/secrets.yml                export-ignore
-config/environments/production.rb export-ignore
-log                               export-ignore
-test                              export-ignore
-tmp                               export-ignore
