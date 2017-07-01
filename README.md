@@ -1,24 +1,45 @@
-# README
+# User Guru
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Customer service and issue tracking application to teach myself Ruby on Rails.
 
-Things you may want to cover:
+# Development Setup
 
-* Ruby version
+1. Clone Repository
 
-* System dependencies
+2. Setup Ruby Environment
 
-* Configuration
+    - This project uses ruby 2.2.3p173
+    - rbenv can be used for ruby environment management https://github.com/rbenv/rbenv
 
-* Database creation
+3. Install bundler and bundle install (from command line in project)
 
-* Database initialization
+    - gem install bundler
+    - bundle install
 
-* How to run the test suite
+4. Database creation
 
-* Services (job queues, cache servers, search engines, etc.)
+    1. Install MySQL
+        - This project uses mysql 5.7
+        - OSX use brew (https://brew.sh) to install mysql
+    2. Create database.yml file (from command line in project)
+        - cp config/database.yml.sample config/database.yml
+        - Update root password to your root password
+    3. Run database rake commands (from command line in project)
+        - rake db:create
+        - rake db:migrate
+        - rake db:seed
 
-* Deployment instructions
+5. Run tests (from command line in project)
 
-* ...
+    - rake test
+
+6. Run rails server (from command line in project)
+
+    - rails server
+
+7. Log in using admin user
+
+    - Navigate to http://localhost:3000/login
+    - Login as admin
+        - email: admin@user.guru
+        - password: password
